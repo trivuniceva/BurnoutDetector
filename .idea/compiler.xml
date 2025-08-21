@@ -17,6 +17,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="notificationsModule" />
+        <module name="healthDataModule" />
         <module name="user-management" />
         <module name="reportsModule" />
       </profile>
@@ -25,6 +26,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="BurnoutDetector" options="-parameters" />
+      <module name="healthDataModule" options="-parameters" />
       <module name="notificationsModule" options="-parameters" />
       <module name="reportsModule" options="-parameters" />
       <module name="user-management" options="-parameters" />

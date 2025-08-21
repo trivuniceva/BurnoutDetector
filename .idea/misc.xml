@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/healthDataModule" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -8,6 +11,7 @@
         <option value="$PROJECT_DIR$/notificationsModule/pom.xml" />
         <option value="$PROJECT_DIR$/reportsModule/pom.xml" />
         <option value="$PROJECT_DIR$/user-management/pom.xml" />
+        <option value="$PROJECT_DIR$/healthDataModule/pom.xml" />
       </list>
     </option>
   </component>
