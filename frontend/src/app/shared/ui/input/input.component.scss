@@ -12,3 +12,21 @@ input {
     border-color: #999;
   }
 }
+
+:host(.underline) input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  border-radius: 0;
+  color: white;
+  padding: 0.5rem 0;
+}
+
+:host(.underline) input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:host(.underline) input:focus {
+  border-bottom: 1px solid #00bfff;
+  outline: none;
+}
