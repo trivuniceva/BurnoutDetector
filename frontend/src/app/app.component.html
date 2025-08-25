@@ -1,5 +1,6 @@
 <div class="home-container">
-  <app-side-nav></app-side-nav>
+  <app-side-nav *ngIf="showSideNav()"></app-side-nav>
+
   <main class="main-content-area">
     <router-outlet></router-outlet>
   </main>
