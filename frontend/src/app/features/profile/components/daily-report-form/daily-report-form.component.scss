@@ -1,29 +1,25 @@
 .daily-report-form-container {
-  background-color: var(--color-card-bg);
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background-color: #E9E9E9;
+  padding: 1rem 2rem 4rem;
+  border-radius: 20px;
+  box-shadow: 0 0px 12px #dddddd;
 
-  h3 {
-    margin: 0;
-    font-weight: bold;
-    font-size: 1.5rem;
+  //border: solid blue;
+
+  p {
+    font-size: 34px;
+    margin-bottom: 4px;
   }
   .date {
-    font-size: 1rem;
-    color: #888;
-    margin-bottom: 2rem;
+    font-size: 14px;
+    color: black;
+    margin-bottom: 3rem;
     display: block;
   }
 
   .form-group {
     margin-bottom: 1.5rem;
-    label {
-      display: block;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-      color: #555;
-    }
+    width: 90%;
   }
 
   app-button {

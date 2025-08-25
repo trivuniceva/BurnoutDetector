@@ -2,10 +2,10 @@ input {
   width: 100%;
   padding: 0.8rem 1rem;
   border: 1px solid var(--color-border);
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: var(--color-input-bg);
   color: var(--color-text-dark);
-  font-size: 16px;
+  //font-size: 16px;
 
   &:focus {
     outline: none;

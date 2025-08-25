@@ -6,26 +6,28 @@
 
     <app-tabs [tabs]="tabs" (tabChange)="activeTab = $event"></app-tabs>
 
-    <div class="search-section">
-      <app-input placeholder="Search..."></app-input>
-      <button class="search-button">
-        <app-icon-search></app-icon-search>
-        <span>Search</span>
-      </button>
+    <div class="profile-cards-holder">
+
+      <div class="search-section">
+        <app-input placeholder="Search..."></app-input>
+        <app-button message="Search"></app-button>
+      </div>
+
+      <div class="stats-cards">
+
+        <app-stat-card
+          *ngFor="let card of statCards"
+          [label]="card.label"
+          [value]="card.value"
+          [period]="card.period"
+          [risk]="card.risk">
+        </app-stat-card>
+      </div>
+
+      <ng-container *ngIf="activeTab === 'My Reports'">
+      </ng-container>
     </div>
 
-    <div class="stats-cards">
-      <app-stat-card
-        *ngFor="let card of statCards"
-        [label]="card.label"
-        [value]="card.value"
-        [period]="card.period"
-        [risk]="card.risk">
-      </app-stat-card>
-    </div>
-
-    <ng-container *ngIf="activeTab === 'My Reports'">
-    </ng-container>
   </div>
 
   <div class="daily-report-area">
