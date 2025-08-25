@@ -1,0 +1,9 @@
+<div class="stat-card">
+  <span class="label">{{ label }}</span>
+  <h3 class="value" [ngClass]="riskColor">{{ value }}</h3>
+  <p class="period">{{ period }}</p>
+  <div class="risk-label">Risk:</div>
+  <div class="risk-bar-container">
+    <div class="risk-bar" [style.width]="(risk * 100) + '%'" [ngClass]="riskColor"></div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.tabs-container {
+  display: flex;
+  gap: 0.5rem;
+
+  .tab-button {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #888;
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s;
+
+    &.active {
+      background-color: var(--color-primary);
+      color: var(--color-text-light);
+    }
+    &:hover:not(.active) {
+      background-color: #e8e8e8;
+    }
+  }
+}

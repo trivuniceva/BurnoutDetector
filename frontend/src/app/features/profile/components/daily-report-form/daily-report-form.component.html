@@ -1,0 +1,32 @@
+<div class="daily-report-form-container">
+  <h3>Daily Report</h3>
+  <span class="date">{{ currentDate }}</span>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Working hours</label>
+      <app-input type="number"></app-input>
+    </div>
+    <div class="form-group">
+      <label>Overtime hours</label>
+      <app-input type="number"></app-input>
+    </div>
+    <div class="form-group">
+      <label>Stress level</label>
+      <app-input type="text"></app-input>
+    </div>
+    <div class="form-group">
+      <label>Sleep quality</label>
+      <app-input type="text"></app-input>
+    </div>
+    <div class="form-group">
+      <label>Physical activity</label>
+      <app-input type="text"></app-input>
+    </div>
+    <div class="form-group">
+      <label>Symptoms</label>
+      <app-input type="text"></app-input>
+    </div>
+    <app-button label="Submit" type="primary"></app-button>
+  </form>
+  <p class="relax-text">Take 5 minutes to breathe and relax</p>
+</div>
