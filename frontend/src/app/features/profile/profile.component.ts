@@ -31,18 +31,18 @@ export class ProfileComponent {
     imageUrl: '/profile-pic.png'
   };
 
+  activeTab = 'My Reports';
+  tabs = ['My Reports', 'View History', 'Recommendations'];
+
   statCards = [
-    { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.3 },
-    { label: 'Stres:', value: '2.3', period: 'per week', risk: 0.7 },
-    { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
+    { label: 'Sleep:', value: '3.4', period: 'per week', risk: 0.9 },
+    { label: 'Stres:', value: '6.3', period: 'per week', risk: 0.5 },
+    { label: 'Sleep:', value: '6.2', period: 'per week', risk: 0.6 },
     { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
     { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
     { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
     { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
   ];
-
-  tabs = ['My Reports', 'View History', 'Recommendations'];
-  activeTab = 'My Reports';
 
   onDailyReportSubmit(data: any) {
     console.log('Daily report submitted:', data);

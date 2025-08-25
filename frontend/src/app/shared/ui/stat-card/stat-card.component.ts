@@ -26,4 +26,24 @@ export class StatCardComponent {
     }
   }
 
+  getCircleGradient(riskValue: number): string {
+    const color = this.getRiskColor(riskValue);
+    const progressPercentage = (1 - riskValue) * 100; // Obrnuta logika za boju kruga
+    const endAngle = progressPercentage * 3.6; // 360 stepeni / 100%
+
+    return `conic-gradient(${color} ${endAngle}deg, #e0e0e0 ${endAngle}deg)`;
+  }
+
+  private getRiskColor(riskValue: number): string {
+    // Definirajte logiku za određivanje boje na osnovu rizika
+    // Ovo bi trebalo da bude isto kao i za risk bar
+    if (riskValue <= 0.3) {
+      return 'var(--color-risk-green)';
+    } else if (riskValue <= 0.6) {
+      return 'var(--color-risk-orange)';
+    } else {
+      return 'var(--color-risk-red)';
+    }
+  }
+
 }

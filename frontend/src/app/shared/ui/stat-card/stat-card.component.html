@@ -1,9 +1,14 @@
 <div class="stat-card">
   <span class="label">{{ label }}</span>
-  <h3 class="value" [ngClass]="riskColor">{{ value }}</h3>
+  <div class="value-circle-container">
+    <div class="value-text">{{ value }}</div>
+    <div class="circle" [ngClass]="riskColor" [style.background]="getCircleGradient(risk)"></div>
+  </div>
   <p class="period">{{ period }}</p>
-  <div class="risk-label">Risk:</div>
-  <div class="risk-bar-container">
-    <div class="risk-bar" [style.width]="(risk * 100) + '%'" [ngClass]="riskColor"></div>
+  <div class="risk-section">
+    <span class="risk-label">Risk:</span>
+    <div class="risk-bar-container">
+      <div class="risk-bar" [ngClass]="riskColor" [style.width]="(risk * 100) + '%'"></div>
+    </div>
   </div>
 </div>
