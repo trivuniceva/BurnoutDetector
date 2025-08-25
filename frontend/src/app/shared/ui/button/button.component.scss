@@ -1,0 +1,20 @@
+.btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--color-text-light);
+  background-color: var(--color-primary);
+  transition: background-color 0.2s;
+
+  &.primary {
+    background-color: var(--color-primary);
+  }
+  &.accent {
+    background-color: var(--color-accent);
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

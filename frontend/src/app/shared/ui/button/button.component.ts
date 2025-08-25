@@ -5,7 +5,7 @@ import {Component, Input} from '@angular/core';
   imports: [],
   standalone: true,
   templateUrl: './button.component.html',
-  styleUrl: './button.component.css'
+  styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
   @Input() message: string = "";

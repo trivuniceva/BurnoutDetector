@@ -1,0 +1,77 @@
+.stat-card {
+  background-color: var(--color-card-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.label {
+  font-size: 1rem;
+  color: #888;
+}
+
+.value {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  position: relative;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid;
+    z-index: -1;
+  }
+
+  // Boje kruga i teksta
+  &.green {
+    color: var(--color-risk-green);
+    &::after { border-color: var(--color-risk-green); }
+  }
+  &.orange {
+    color: var(--color-risk-orange);
+    &::after { border-color: var(--color-risk-orange); }
+  }
+  &.red {
+    color: var(--color-risk-red);
+    &::after { border-color: var(--color-risk-red); }
+  }
+}
+
+.period {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 1rem;
+}
+
+.risk-label {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 1rem;
+}
+
+.risk-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.risk-bar {
+  height: 100%;
+  border-radius: 4px;
+  &.green { background-color: var(--color-risk-green); }
+  &.orange { background-color: var(--color-risk-orange); }
+  &.red { background-color: var(--color-risk-red); }
+}

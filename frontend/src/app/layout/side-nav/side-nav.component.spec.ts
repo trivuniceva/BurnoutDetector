@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReportTabsComponent } from './report-tabs.component';
+import { SideNavComponent } from './side-nav.component';
 
-describe('ReportTabsComponent', () => {
-  let component: ReportTabsComponent;
-  let fixture: ComponentFixture<ReportTabsComponent>;
+describe('SideNavComponent', () => {
+  let component: SideNavComponent;
+  let fixture: ComponentFixture<SideNavComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportTabsComponent]
+      imports: [SideNavComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReportTabsComponent);
+    fixture = TestBed.createComponent(SideNavComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
