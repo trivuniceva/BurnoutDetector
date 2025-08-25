@@ -6,13 +6,15 @@
   display: flex;
   width: 100%;
   height: 100%;
+  background-image: url('/pozadina.jpg');
+  background-size: cover;
+  background-position: center;
+
 }
 
 .background-panel {
   flex: 1;
-  background-image: url('/pozadina.jpg');
-  background-size: cover;
-  background-position: center;
+
   position: relative;
 
   &::before {
@@ -31,8 +33,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(14, 23, 22, 0.7);
-  backdrop-filter: blur(5px);
+  //background-color: rgba(14, 23, 22, 0.7);
+  //backdrop-filter: blur(5px);
+
+  background-color: rgba(30,30,30, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
 
   .form-content {
     width: 70%;
