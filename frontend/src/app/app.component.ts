@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {SideNavComponent} from './layout/side-nav/side-nav.component';
-import {NgIf} from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SideNavComponent, NgIf],
+  imports: [
+    NgIf,
+    NgClass,
+    RouterOutlet,
+    SideNavComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

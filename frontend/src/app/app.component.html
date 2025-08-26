@@ -1,7 +1,7 @@
 <div class="home-container">
   <app-side-nav *ngIf="showSideNav()"></app-side-nav>
 
-  <main class="main-content-area">
+  <main class="main-content-area" [ngClass]="{'no-margin': !showSideNav()}">
     <router-outlet></router-outlet>
   </main>
 </div>
