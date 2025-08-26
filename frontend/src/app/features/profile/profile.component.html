@@ -7,25 +7,29 @@
     <app-tabs [tabs]="tabs" (tabChange)="activeTab = $event"></app-tabs>
 
     <div class="profile-cards-holder">
-
-      <div class="search-section">
-        <app-input placeholder="Search..."></app-input>
-        <app-button message="Search"></app-button>
-      </div>
-
-      <div class="stats-cards">
-
-        <app-stat-card
-          *ngFor="let card of statCards"
-          [label]="card.label"
-          [value]="card.value"
-          [period]="card.period"
-          [risk]="card.risk">
-        </app-stat-card>
-      </div>
-
       <ng-container *ngIf="activeTab === 'My Reports'">
+        <div class="search-section">
+          <app-input placeholder="Search..."></app-input>
+          <app-button message="Search"></app-button>
+        </div>
+        <div class="stats-cards">
+          <app-stat-card
+            *ngFor="let card of statCards"
+            [label]="card.label"
+            [value]="card.value"
+            [period]="card.period"
+            [risk]="card.risk">
+          </app-stat-card>
+        </div>
       </ng-container>
+
+      <ng-container *ngIf="activeTab === 'View History'">
+        <p>This is the View History section.</p> </ng-container>
+
+      <ng-container *ngIf="activeTab === 'Recommendations'">
+        <p>This is the Recommendations section.</p> </ng-container>
+
+
     </div>
 
   </div>

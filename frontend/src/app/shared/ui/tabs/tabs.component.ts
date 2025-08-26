@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 @Component({
@@ -10,11 +10,18 @@ import {CommonModule} from '@angular/common';
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.scss'
 })
-export class TabsComponent {
+export class TabsComponent implements OnInit{
   @Input() tabs: string[] = [];
   @Output() tabChange = new EventEmitter<string>();
 
-  activeTab: string = this.tabs.length > 0 ? this.tabs[0] : '';
+  @Input() activeTab: string = '';
+
+  ngOnInit(): void {
+    if (!this.activeTab && this.tabs.length > 0) {
+      this.activeTab = this.tabs[0];
+      this.tabChange.emit(this.activeTab);
+    }
+  }
 
   selectTab(tab: string) {
     this.activeTab = tab;

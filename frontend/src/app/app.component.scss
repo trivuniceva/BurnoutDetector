@@ -6,9 +6,12 @@
 .main-content-area {
   flex: 1;
   overflow-y: auto;
+  margin-left: 160px;
 }
 
 app-side-nav {
+  position: fixed;
   width: 160px;
+  height: 100vh;
   background-color: #1e1e1e;
 }
