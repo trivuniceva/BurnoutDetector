@@ -7,6 +7,7 @@ import {StatCardComponent} from '../../shared/ui/stat-card/stat-card.component';
 import {DailyReportFormComponent} from './components/daily-report-form/daily-report-form.component';
 import {ButtonComponent} from '../../shared/ui/button/button.component';
 import {EditProfileComponent} from './components/edit-profile/edit-profile.component';
+import {SearchBarComponent} from '../../shared/ui/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,8 @@ import {EditProfileComponent} from './components/edit-profile/edit-profile.compo
     TabsComponent,
     InputComponent,
     ButtonComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    SearchBarComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

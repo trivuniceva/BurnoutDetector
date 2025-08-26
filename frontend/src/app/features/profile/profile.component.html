@@ -8,10 +8,15 @@
 
     <div class="profile-cards-holder">
       <ng-container *ngIf="activeTab === 'My Reports'">
-        <div class="search-section">
-          <app-input placeholder="Search..."></app-input>
-          <app-button message="Search"></app-button>
-        </div>
+<!--        <div class="search-section">-->
+<!--          <app-input placeholder="Search..."></app-input>-->
+<!--          <app-button message="Search"></app-button>-->
+<!--        </div>-->
+
+        <app-search-bar></app-search-bar>
+
+
+
         <div class="stats-cards">
           <app-stat-card
             *ngFor="let card of statCards"
