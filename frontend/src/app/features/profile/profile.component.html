@@ -1,6 +1,6 @@
 <div class="profile-container">
   <div class="profile-main-area">
-    <div class="profile-header-container">
+    <div class="profile-header-container" (click)="openEditPopup()">
       <app-profile-header [user]="user"></app-profile-header>
     </div>
 
@@ -38,3 +38,6 @@
     <app-daily-report-form (formSubmit)="onDailyReportSubmit($event)"></app-daily-report-form>
   </div>
 </div>
+
+<app-edit-profile [user]="user" *ngIf="showEditPopup" (close)="closeEditPopup()"></app-edit-profile>
+
