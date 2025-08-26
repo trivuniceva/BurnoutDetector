@@ -1,0 +1,38 @@
+<div class="employee-container">
+  <div class="employee-header">
+    <div class="employee-avatar">
+      <img [src]="member.imageUrl" alt="Employee Picture">
+    </div>
+    <div class="employee-info">
+      <h2 class="employee-name">{{ member.firstName }} {{ member.lastName }}</h2>
+      <p class="employee-role">{{ member.userRole }}</p>
+    </div>
+  </div>
+
+  <div class="employee-stats">
+    <div class="param-row">
+      <div class="param">
+        <span class="param-label">Param:</span>
+        <strong class="param-value">23</strong>
+      </div>
+      <div class="param">
+        <span class="param-label">Param:</span>
+        <strong class="param-value">23</strong>
+      </div>
+      <div class="param">
+        <span class="param-label">Param:</span>
+        <strong class="param-value">24</strong>
+      </div>
+    </div>
+
+    <div class="risk-section">
+      <span class="risk-label">Risk:</span>
+      <div class="risk-bar-container">
+        <div class="risk-bar-fill"
+             [ngClass]="getRiskColor(20)"
+             [style.width]="(20 * 100) + '%'">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

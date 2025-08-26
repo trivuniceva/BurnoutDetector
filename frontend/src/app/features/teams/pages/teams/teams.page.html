@@ -1,0 +1,28 @@
+<app-two-column-layout>
+  <div content-section>
+    <div class="teams-main-content">
+      <div class="team-header-container">
+        <app-entity-header
+          [label]="'Team:'"
+          [title]="currentTeam.name"
+          [imageUrl]="currentTeam.imageUrl">
+        </app-entity-header>
+      </div>
+      <app-search-bar></app-search-bar>
+      <div class="team-cards-holder">
+        <app-team-member-card *ngFor="let member of currentTeam.members"
+                              [member]="member"
+                              (memberSelected)="onMemberSelected(member)"
+        >
+
+        </app-team-member-card>
+      </div>
+    </div>
+  </div>
+
+  <div sidebar-section>
+    <div class="sidebar-content">
+      <app-employee-details [member]="selectedEmployee" *ngIf="selectedEmployee"></app-employee-details>
+    </div>
+  </div>
+</app-two-column-layout>

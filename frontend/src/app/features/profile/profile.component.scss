@@ -24,7 +24,6 @@
 
 .profile-header-container{
   margin-bottom: 2rem;
-
 }
 
 app-tabs {
@@ -36,19 +35,6 @@ app-tabs {
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
   border-radius: 0 20px 20px;
 
-}
-
-.search-section {
-  display: flex;
-  gap: 3.5rem;
-  align-items: center;
-  margin-bottom: 2%;
-  margin-left: 28px;
-  margin-top: 2rem;
-
-  app-input {
-    width: 74%;
-  }
 }
 
 .stats-cards {

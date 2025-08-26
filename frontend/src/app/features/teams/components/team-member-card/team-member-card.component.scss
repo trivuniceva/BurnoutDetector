@@ -1,0 +1,131 @@
+.member-card {
+  padding: 1rem;
+  margin: 12px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  width: 250px;
+  height: 380px;
+  box-sizing: border-box;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.member-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.member-details {
+  h4.member-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  p.member-role {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 0.2rem;
+  }
+}
+
+.member-stats {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.param-row {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 2rem;
+
+  span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #555;
+
+    &:before {
+      content: attr(data-label);
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 0.2rem;
+    }
+  }
+
+  strong {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+  }
+}
+
+.risk-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.risk-label {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.risk-bar-container {
+  width: 80%;
+  height: 8px;
+  background-color: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.risk-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background-color: var(--color-risk-red);
+}
+
+.risk-bar-fill.green {
+  background-color: var(--color-risk-green);
+}
+.risk-bar-fill.orange {
+  background-color: var(--color-risk-orange);
+}
+.risk-bar-fill.red {
+  background-color: var(--color-risk-red);
+}

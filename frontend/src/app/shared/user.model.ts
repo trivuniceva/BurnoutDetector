@@ -7,4 +7,7 @@ export interface User {
   lastName: string;
   email: string;
   userRole: UserRole;
+  imageUrl: string;
+
+  // riskScore: number;
 }
