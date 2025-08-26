@@ -10,18 +10,19 @@
       </div>
       <app-search-bar></app-search-bar>
       <div class="team-cards-holder">
-        <app-team-member-card *ngFor="let member of currentTeam.members" [member]="member"></app-team-member-card>
+        <app-team-member-card *ngFor="let member of currentTeam.members"
+                              [member]="member"
+                              (memberSelected)="onMemberSelected(member)"
+        >
+
+        </app-team-member-card>
       </div>
     </div>
   </div>
 
   <div sidebar-section>
     <div class="sidebar-content">
-<!--      <app-header-->
-<!--        [label]="''"-->
-<!--        [title]="currentTeam.manager.name"-->
-<!--        [imageUrl]="currentTeam.manager.imageUrl">-->
-<!--      </app-header>-->
+      <app-employee-details [member]="selectedEmployee" *ngIf="selectedEmployee"></app-employee-details>
     </div>
   </div>
 </app-two-column-layout>

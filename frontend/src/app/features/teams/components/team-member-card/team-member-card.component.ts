@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {User} from '../../../../shared/user.model';
 import {CommonModule} from '@angular/common';
 
@@ -13,6 +13,11 @@ import {CommonModule} from '@angular/common';
 })
 export class TeamMemberCardComponent {
   @Input() member!: User;
+  @Output() memberSelected = new EventEmitter<User>();
+
+  onCardClick(): void {
+    this.memberSelected.emit(this.member);
+  }
 
   getRiskColor(riskScore: number): string {
     if (riskScore <= 0.4) {

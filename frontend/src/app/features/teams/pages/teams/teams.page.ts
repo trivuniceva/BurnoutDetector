@@ -5,6 +5,8 @@ import {Team} from '../../teams.model';
 import {EntityHeaderComponent} from '../../../../shared/ui/entity-header/entity-header.component';
 import {CommonModule} from '@angular/common';
 import {TeamMemberCardComponent} from '../../components/team-member-card/team-member-card.component';
+import {EmployeeDetailsComponent} from '../../components/employee-details/employee-details.component';
+import {User} from '../../../../shared/user.model';
 
 @Component({
   selector: 'app-teams',
@@ -15,11 +17,14 @@ import {TeamMemberCardComponent} from '../../components/team-member-card/team-me
     EntityHeaderComponent,
     TeamMemberCardComponent,
     TwoColumnLayoutComponent,
+    EmployeeDetailsComponent,
+    EmployeeDetailsComponent,
   ],
   templateUrl: './teams.page.html',
   styleUrl: './teams.page.scss'
 })
 export class TeamsPage {
+  selectedEmployee: User | null = null;
 
   currentTeam: Team = {
     id: 't1',
@@ -79,5 +84,9 @@ export class TeamsPage {
   };
 
   constructor() {}
+
+  onMemberSelected(member: User): void {
+    this.selectedEmployee = member;
+  }
 
 }
