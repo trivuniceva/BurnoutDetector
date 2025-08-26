@@ -8,4 +8,6 @@ export interface User {
   email: string;
   userRole: UserRole;
   imageUrl: string;
+
+  // riskScore: number;
 }

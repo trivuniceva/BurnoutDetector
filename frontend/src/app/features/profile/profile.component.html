@@ -1,22 +1,23 @@
-<div class="profile-container">
-  <div class="profile-main-area">
+<app-two-column-layout>
+  <div content-section>
+<!--    <div class="profile-header-container" (click)="openEditPopup()">-->
+<!--      <app-profile-header [user]="user"></app-profile-header>-->
+<!--    </div>-->
+
     <div class="profile-header-container" (click)="openEditPopup()">
-      <app-profile-header [user]="user"></app-profile-header>
+      <app-entity-header
+        [label]="'Profile'"
+        [title]="user.name"
+        [subtitle]="user.role"
+        [imageUrl]="user.imageUrl">
+      </app-entity-header>
     </div>
 
     <app-tabs [tabs]="tabs" (tabChange)="activeTab = $event"></app-tabs>
 
     <div class="profile-cards-holder">
       <ng-container *ngIf="activeTab === 'My Reports'">
-<!--        <div class="search-section">-->
-<!--          <app-input placeholder="Search..."></app-input>-->
-<!--          <app-button message="Search"></app-button>-->
-<!--        </div>-->
-
         <app-search-bar></app-search-bar>
-
-
-
         <div class="stats-cards">
           <app-stat-card
             *ngFor="let card of statCards"
@@ -29,20 +30,18 @@
       </ng-container>
 
       <ng-container *ngIf="activeTab === 'View History'">
-        <p>This is the View History section.</p> </ng-container>
+        <p>This is the View History section.</p>
+      </ng-container>
 
       <ng-container *ngIf="activeTab === 'Recommendations'">
-        <p>This is the Recommendations section.</p> </ng-container>
-
-
+        <p>This is the Recommendations section.</p>
+      </ng-container>
     </div>
-
   </div>
 
-  <div class="daily-report-area">
+  <div sidebar-section>
     <app-daily-report-form (formSubmit)="onDailyReportSubmit($event)"></app-daily-report-form>
   </div>
-</div>
+</app-two-column-layout>
 
 <app-edit-profile [user]="user" *ngIf="showEditPopup" (close)="closeEditPopup()"></app-edit-profile>
-

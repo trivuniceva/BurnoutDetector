@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import {ProfileHeaderComponent} from './components/profile-header/profile-header.component';
 import {CommonModule} from '@angular/common';
 import {TabsComponent} from '../../shared/ui/tabs/tabs.component';
-import {InputComponent} from '../../shared/ui/input/input.component';
 import {StatCardComponent} from '../../shared/ui/stat-card/stat-card.component';
 import {DailyReportFormComponent} from './components/daily-report-form/daily-report-form.component';
-import {ButtonComponent} from '../../shared/ui/button/button.component';
 import {EditProfileComponent} from './components/edit-profile/edit-profile.component';
 import {SearchBarComponent} from '../../shared/ui/search-bar/search-bar.component';
+import {TwoColumnLayoutComponent} from '../../shared/ui/two-column-layout/two-column-layout.component';
+import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
 
 @Component({
   selector: 'app-profile',
@@ -16,12 +15,11 @@ import {SearchBarComponent} from '../../shared/ui/search-bar/search-bar.componen
     CommonModule,
     StatCardComponent,
     DailyReportFormComponent,
-    ProfileHeaderComponent,
     TabsComponent,
-    InputComponent,
-    ButtonComponent,
     EditProfileComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    TwoColumnLayoutComponent,
+    EntityHeaderComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
