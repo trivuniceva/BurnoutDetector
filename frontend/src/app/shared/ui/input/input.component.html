@@ -1,1 +1,2 @@
-<input [type]="type" [placeholder]="placeholder">
+<input [type]="type" [placeholder]="placeholder" [value]="value"
+       (input)="valueChange.emit($any($event.target).value)">
