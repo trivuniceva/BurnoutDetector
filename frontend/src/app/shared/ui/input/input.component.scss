@@ -5,6 +5,7 @@ input {
   border-radius: 20px;
   //background-color: var(--color-input-bg);
   color: var(--color-text-dark);
+  transition: background-color 9999s ease-in-out 0s;
   //font-size: 16px;
 
   &:focus {
@@ -20,6 +21,8 @@ input {
   border-radius: 0;
   color: white;
   padding: 0.5rem 0;
+
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 :host(.underline) input::placeholder {
@@ -29,4 +32,20 @@ input {
 :host(.underline) input:focus {
   border-bottom: 1px solid #00bfff;
   outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: var(--color-text-dark);
+}
+
+:host(.underline) input:-webkit-autofill,
+:host(.underline) input:-webkit-autofill:hover,
+:host(.underline) input:-webkit-autofill:focus,
+:host(.underline) input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: white !important; /* Promijeni boju teksta za bijelu pozadinu */
 }
