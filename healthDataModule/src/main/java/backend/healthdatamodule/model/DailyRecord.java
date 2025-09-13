@@ -23,4 +23,42 @@ public class DailyRecord {
 
     public DailyRecord() {}
 
+    public DailyRecord(Long employeeId, LocalDate date) {
+        this.employeeId = employeeId;
+        this.date = date;
+        this.dailyFactors = new ArrayList<>();
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public List<DailyFactor> getDailyFactors() {
+        return dailyFactors;
+    }
+
+    public void setDailyFactors(List<DailyFactor> dailyFactors) {
+        this.dailyFactors = dailyFactors;
+    }
 }
