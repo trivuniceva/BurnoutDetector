@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable, tap, throwError} from 'rxjs';
+import {User} from '../../shared/user.model';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +10,22 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private apiUrl = "http://localhost:8080/api/auth";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(email: string, password: string): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap((response: any) => {
+        this.saveUser(response);
+
+        this.router.navigate(['/profile']);
+      }),
+      catchError(error => {
+        console.error('Login error:', error);
+        return throwError(error);
+      })
+    );
   }
+
 
   saveUser(user: any): void {
     localStorage.setItem('user', JSON.stringify(user));

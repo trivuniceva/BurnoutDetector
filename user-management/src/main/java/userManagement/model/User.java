@@ -11,8 +11,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "first_name")
     private String firstName;
-    private String lastname;
+
+    @Column(name = "lastname")
+    private String lastName;
+
+    @Column(name = "profile_pic")
+    private String profilePic;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -23,13 +29,14 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastname, String email, String password, UserRole userRole) {
+    public User(Long id, String firstName, String lastname, String email, String password, UserRole userRole, String profilePic) {
         this.id = id;
         this.firstName = firstName;
-        this.lastname = lastname;
+        this.lastName = lastname;
         this.email = email;
         this.password = password;
         this.userRole = userRole;
+        this.profilePic = profilePic;
     }
 
     public Long getId() {
@@ -48,12 +55,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -78,5 +85,13 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 }

@@ -21,13 +21,12 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(private authService: AuthService){}
 
   onLogin() {
     this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        this.authService.saveUser(response); // čuvamo u localStorage
-        this.router.navigate(['/profile']);
+      next: () => {
+        console.log('Login successful');
       },
       error: () => {
         alert("Invalid email or password");

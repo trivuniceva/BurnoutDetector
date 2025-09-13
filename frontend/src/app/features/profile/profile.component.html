@@ -6,9 +6,10 @@
 
     <div class="profile-header-container" (click)="openEditPopup()">
       <app-entity-header
+        *ngIf="user"
         [label]="'Profile'"
-        [title]="user.name"
-        [subtitle]="user.role"
+        [title]="user.firstName + ' ' + user.lastName"
+        [subtitle]="user.userRole"
         [imageUrl]="user.imageUrl">
       </app-entity-header>
     </div>

@@ -19,8 +19,8 @@ public class Employee extends User {
         super();
     }
 
-    public Employee(Long id, String firstName, String lastName, String email, String password) {
-        super(id, firstName, lastName, email, password, UserRole.EMPLOYEE);
+    public Employee(Long id, String firstName, String lastName, String email, String password, String profilePic) {
+        super(id, firstName, lastName, email, password, UserRole.EMPLOYEE, profilePic);
     }
 
     public Manager getManager() { return manager; }
