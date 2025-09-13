@@ -14,7 +14,7 @@ public class DailyFactor {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "daily_record_id")
-    private DailyRecord dailyRecordId;
+    private DailyRecord dailyRecord;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "factor_type_id")
