@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {catchError, Observable, tap, throwError} from 'rxjs';
-import {User} from '../../shared/user.model';
 import {Router} from '@angular/router';
 
 @Injectable({

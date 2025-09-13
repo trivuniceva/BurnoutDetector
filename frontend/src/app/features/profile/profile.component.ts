@@ -9,6 +9,7 @@ import {TwoColumnLayoutComponent} from '../../shared/ui/two-column-layout/two-co
 import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
 import {User} from '../../shared/user.model';
 import {AuthService} from '../../core/auth/auth.service';
+import {ProfileService} from './profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -44,10 +45,18 @@ export class ProfileComponent implements OnInit{
     { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
   ];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private profileService: ProfileService) { }
 
   ngOnInit() {
     this.user = this.authService.getUser();
+
+    const user = this.authService.getUser();
+    if (user) {
+      user.imageUrl = this.authService.getUser().profilePic
+        ? this.profileService.getProfilePictureUrl(this.authService.getUser().profilePic)
+        : '/assets/images/default-profile.png';
+      this.user = user;
+    }
 
   }
 

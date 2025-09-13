@@ -12,20 +12,19 @@
 
     <div class="popup-content">
       <div class="profile-pic-section">
-        <img [src]="user.imageUrl" alt="Profile Picture" class="profile-pic" (click)="fileInput.click()">
+        <img [src]="user.imageUrl || 'defaultPic.jpg'" alt="Profile Picture" class="profile-pic" (click)="fileInput.click()">
         <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;">
       </div>
       <div class="form-section">
-        <app-input placeholder="Name:"></app-input>
-        <app-input placeholder="Lastname:"></app-input>
-        <app-input placeholder="Phone:"></app-input>
-        <app-input placeholder="Username:"></app-input>
-        <app-input placeholder="Password:" type="password"></app-input>
-        <app-input placeholder="Confirm password:" type="password"></app-input>
+        <app-input placeholder="Name" [value]="user.firstName" (valueChange)="user.firstName = $event"></app-input>
+        <app-input placeholder="Lastname" [value]="user.lastName" (valueChange)="user.lastName = $event"></app-input>
+        <app-input placeholder="Email" [value]="user.email" (valueChange)="user.email = $event"></app-input>
+        <app-input placeholder="Password" type="password"></app-input>
+        <app-input placeholder="Confirm password" type="password"></app-input>
       </div>
     </div>
     <div class="popup-footer">
-      <app-button message="Save"></app-button>
+      <app-button message="Save" (clicked)="saveProfileInfo()"></app-button>
     </div>
   </div>
 </div>
