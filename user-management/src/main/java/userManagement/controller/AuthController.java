@@ -21,11 +21,11 @@ public class AuthController {
     UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
         User user = userRepository.findByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
 
         if(user != null){
-            return ResponseEntity.ok("Login successful " + user.getFirstName());
+            return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }

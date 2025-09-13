@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterModule} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {InputComponent} from '../../../shared/ui/input/input.component';
 import {ButtonComponent} from '../../../shared/ui/button/button.component';
+import {AuthService} from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +18,20 @@ import {ButtonComponent} from '../../../shared/ui/button/button.component';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  email: string = '';
+  password: string = '';
+
+  constructor(private authService: AuthService, private router: Router){}
 
   onLogin() {
-
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        this.authService.saveUser(response); // čuvamo u localStorage
+        this.router.navigate(['/profile']);
+      },
+      error: () => {
+        alert("Invalid email or password");
+      }
+    });
   }
 }
