@@ -9,7 +9,7 @@ import {TwoColumnLayoutComponent} from '../../shared/ui/two-column-layout/two-co
 import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
 import {User} from '../../shared/user.model';
 import {AuthService} from '../../core/auth/auth.service';
-import {ProfileService} from './profile.service';
+import {ProfileService} from './services/profile.service';
 
 @Component({
   selector: 'app-profile',

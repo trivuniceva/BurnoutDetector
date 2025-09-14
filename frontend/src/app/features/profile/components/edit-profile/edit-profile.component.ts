@@ -4,7 +4,7 @@ import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { User } from '../../../../shared/user.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {ProfileService} from '../../profile.service';
+import {ProfileService} from '../../services/profile.service';
 
 @Component({
   selector: 'app-edit-profile',
