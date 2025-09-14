@@ -42,7 +42,10 @@
   </div>
 
   <div sidebar-section>
-    <app-daily-report-form (formSubmit)="onDailyReportSubmit($event)"></app-daily-report-form>
+    <app-daily-report-form
+      *ngIf = "user"
+      [user]="user"
+      (formSubmit)="onDailyReportSubmit($event)"></app-daily-report-form>
   </div>
 </app-two-column-layout>
 
