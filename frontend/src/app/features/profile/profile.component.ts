@@ -9,7 +9,7 @@ import {TwoColumnLayoutComponent} from '../../shared/ui/two-column-layout/two-co
 import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
 import {User} from '../../shared/user.model';
 import {AuthService} from '../../core/auth/auth.service';
-import {ProfileService} from './profile.service';
+import {ProfileService} from './services/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,11 +38,8 @@ export class ProfileComponent implements OnInit{
   statCards = [
     { label: 'Sleep:', value: '3.4', period: 'per week', risk: 0.9 },
     { label: 'Stres:', value: '6.3', period: 'per week', risk: 0.5 },
-    { label: 'Sleep:', value: '6.2', period: 'per week', risk: 0.6 },
-    { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
-    { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
-    { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
-    { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
+    { label: 'Working hours:', value: '52', period: 'per week', risk: 0.8 },
+    { label: 'Burnout risk:', value: '7.2', period: 'per week', risk: 0.8 },
   ];
 
   constructor(private authService: AuthService, private profileService: ProfileService) { }

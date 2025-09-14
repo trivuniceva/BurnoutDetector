@@ -1,0 +1,22 @@
+export const RELAXATION_TIPS: string[] = [
+  "Take three deep breaths and focus on your breathing.",
+  "Stand up and stretch for at least 2 minutes.",
+  "Drink a glass of water to refresh your body.",
+  "Go for a short walk, even if it’s around the room.",
+  "Listen to your favorite relaxing song.",
+  "Rest your eyes by looking away from the screen for 5 minutes.",
+  "Try a quick 3-minute meditation.",
+  "Chat with a friend or colleague for a mental break.",
+  "Write down three things you are grateful for today.",
+  "Close your eyes and visualize a peaceful place.",
+  "Have a light and healthy snack, like fruit or nuts.",
+  "Practice slow breathing (inhale 4 sec, exhale 6 sec).",
+  "Watch a short funny video or laugh at a joke.",
+  "Take a few minutes to enjoy complete silence.",
+  "Organize your workspace to clear your mind.",
+  "Stretch your neck and shoulders to release tension.",
+  "Play calming sounds like rain, forest, or ocean waves.",
+  "Write down any thoughts that are stressing you.",
+  "Focus on one small thing you can control right now.",
+  "Turn off notifications for 15 minutes and enjoy the quiet."
+];

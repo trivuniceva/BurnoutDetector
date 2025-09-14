@@ -1,26 +1,25 @@
 <div class="daily-report-form-container">
   <p>Daily Report</p>
-  <p class="date">{{ currentDate }}</p>
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <app-input type="number" placeholder="Working hours"></app-input>
+  <p class="date">{{ currentDate | date: 'dd MMM yyyy' }}</p>
+
+  <form [formGroup]="dailyReportForm">
+
+    <div *ngFor="let factor of dailyFactors; let i = index" class="form-group">
+      <label *ngIf="dailyReportForm.get(factor.name)?.value">
+        {{ factor.placeholder }}
+      </label>
+      <app-input
+        [type]="factor.type"
+        [placeholder]="factor.placeholder"
+        [formControlName]="factor.name"
+        [min]="factor.min"
+        [max]="factor.max">
+      </app-input>
+
     </div>
-    <div class="form-group">
-      <app-input type="number" placeholder="Overtime hours"></app-input>
-    </div>
-    <div class="form-group">
-      <app-input type="text" placeholder="Stress level"></app-input>
-    </div>
-    <div class="form-group">
-      <app-input type="text" placeholder="Sleep quality"></app-input>
-    </div>
-    <div class="form-group">
-      <app-input type="text" placeholder="Physical activity"></app-input>
-    </div>
-    <div class="form-group">
-      <app-input type="text" placeholder="Symptoms"></app-input>
-    </div>
-    <app-button message="Submit"></app-button>
+
+    <app-button message="Submit" (clicked)="onSubmit()"></app-button>
   </form>
-  <p class="relax-text">Take 5 minutes to breathe and relax</p>
+
+  <p class="relax-text">{{ currentTip }}</p>
 </div>

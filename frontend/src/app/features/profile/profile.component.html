@@ -18,6 +18,7 @@
 
     <div class="profile-cards-holder">
       <ng-container *ngIf="activeTab === 'My Reports'">
+        <div style="height: 26px"></div>
         <app-search-bar></app-search-bar>
         <div class="stats-cards">
           <app-stat-card
@@ -41,7 +42,10 @@
   </div>
 
   <div sidebar-section>
-    <app-daily-report-form (formSubmit)="onDailyReportSubmit($event)"></app-daily-report-form>
+    <app-daily-report-form
+      *ngIf = "user"
+      [user]="user"
+      (formSubmit)="onDailyReportSubmit($event)"></app-daily-report-form>
   </div>
 </app-two-column-layout>
 
