@@ -6,10 +6,11 @@
 
     <div class="profile-header-container" (click)="openEditPopup()">
       <app-entity-header
+        *ngIf="user"
         [label]="'Profile'"
-        [title]="user.name"
-        [subtitle]="user.role"
-        [imageUrl]="user.imageUrl">
+        [title]="user.firstName + ' ' + user.lastName"
+        [subtitle]="user.userRole"
+        [imageUrl]="user.imageUrl ?? 'defaultPic.jpg'">
       </app-entity-header>
     </div>
 
@@ -44,4 +45,4 @@
   </div>
 </app-two-column-layout>
 
-<app-edit-profile [user]="user" *ngIf="showEditPopup" (close)="closeEditPopup()"></app-edit-profile>
+<app-edit-profile *ngIf="showEditPopup && user as nonNullUser" [user]="nonNullUser" (close)="closeEditPopup()"></app-edit-profile>

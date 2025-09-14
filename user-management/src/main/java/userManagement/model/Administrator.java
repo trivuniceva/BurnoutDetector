@@ -19,8 +19,9 @@ public class Administrator extends User{
             String firstName,
             String lastName,
             String email,
-            String password
+            String password,
+            String profilePic
     ) {
-        super(id, firstName, lastName, email, password, UserRole.ADMINISTRATOR);
+        super(id, firstName, lastName, email, password, UserRole.ADMINISTRATOR, profilePic);
     }
 }

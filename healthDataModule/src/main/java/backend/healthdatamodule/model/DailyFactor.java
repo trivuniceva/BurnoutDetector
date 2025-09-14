@@ -13,7 +13,8 @@ public class DailyFactor {
     private Double value;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "daily_record_id", nullable = false)
+
+    @JoinColumn(name = "daily_record_id")
     private DailyRecord dailyRecord;
 
     @ManyToOne(fetch = FetchType.LAZY)

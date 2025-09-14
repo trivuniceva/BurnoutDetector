@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 @Component({
@@ -13,5 +13,7 @@ import {CommonModule} from '@angular/common';
 export class InputComponent {
   @Input() type: string = 'text';
   @Input() placeholder: string = '';
+  @Input() value: string = '';
+  @Output() valueChange = new EventEmitter<string>();
 
 }

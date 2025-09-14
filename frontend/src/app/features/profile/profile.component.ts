@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule, NgIf} from '@angular/common';
 import {TabsComponent} from '../../shared/ui/tabs/tabs.component';
 import {StatCardComponent} from '../../shared/ui/stat-card/stat-card.component';
 import {DailyReportFormComponent} from './components/daily-report-form/daily-report-form.component';
@@ -7,6 +7,9 @@ import {EditProfileComponent} from './components/edit-profile/edit-profile.compo
 import {SearchBarComponent} from '../../shared/ui/search-bar/search-bar.component';
 import {TwoColumnLayoutComponent} from '../../shared/ui/two-column-layout/two-column-layout.component';
 import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
+import {User} from '../../shared/user.model';
+import {AuthService} from '../../core/auth/auth.service';
+import {ProfileService} from './profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,20 +22,15 @@ import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header
     EditProfileComponent,
     SearchBarComponent,
     TwoColumnLayoutComponent,
-    EntityHeaderComponent
+    EntityHeaderComponent,
+    NgIf
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent {
-
+export class ProfileComponent implements OnInit{
+  user: User | null = null;
   showEditPopup: boolean = false;
-
-  user = {
-    name: 'Nikolina Triv',
-    role: 'Junior Web Dev',
-    imageUrl: '/profile-pic.png'
-  };
 
   activeTab = 'My Reports';
   tabs = ['My Reports', 'View History', 'Recommendations'];
@@ -46,6 +44,21 @@ export class ProfileComponent {
     { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
     { label: 'Sleep:', value: '7.2', period: 'per week', risk: 0.8 },
   ];
+
+  constructor(private authService: AuthService, private profileService: ProfileService) { }
+
+  ngOnInit() {
+    this.user = this.authService.getUser();
+
+    const user = this.authService.getUser();
+    if (user) {
+      user.imageUrl = this.authService.getUser().profilePic
+        ? this.profileService.getProfilePictureUrl(this.authService.getUser().profilePic)
+        : '/assets/images/default-profile.png';
+      this.user = user;
+    }
+
+  }
 
   openEditPopup() {
     this.showEditPopup = true;
