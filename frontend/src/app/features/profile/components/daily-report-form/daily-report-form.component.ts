@@ -39,6 +39,7 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
   dailyFactors = [
     { name: 'workingHours', placeholder: 'Working hours', type: 'number' },
     { name: 'stressLevel', placeholder: 'Stress level (0–10)', type: 'number', min: 0, max: 10 },
+    { name: 'sleepHours', placeholder: 'Sleep hours', type: 'number' },
     { name: 'sleepQuality', placeholder: 'Sleep quality', type: 'textarea' },
     { name: 'physicalActivity', placeholder: 'Physical activity', type: 'textarea' },
     { name: 'symptoms', placeholder: 'Symptoms', type: 'textarea' }
@@ -62,19 +63,28 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
     });
     this.dailyReportForm = this.fb.group(formControls);
 
-    const today = this.currentDate.toISOString().split('T')[0];
+    const today = this.getLocalDateString(this.currentDate);
 
     this.dailyDataService.getDailyReport(Number(this.user.id), today).subscribe(report => {
       if (report) {
-        report.dailyFactors.forEach((f: { name: string, value: string | number }) => {
-          if (this.dailyReportForm.controls[f.name]) {
-            this.dailyReportForm.controls[f.name].setValue(f.value);
-          }
-        });
-      }
-      console.log(report.dailyFactors[0])
-    });
+        const reportDate = new Date(report.date).toISOString().split('T')[0];
 
+        console.log(reportDate)
+        console.log(today)
+
+        if (reportDate === today) {
+          report.dailyFactors.forEach((f: { name: string, value: string | number }) => {
+            if (this.dailyReportForm.controls[f.name]) {
+              this.dailyReportForm.controls[f.name].setValue(f.value);
+            }
+          });
+        } else {
+          this.dailyReportForm.reset();
+        }
+      } else {
+        this.dailyReportForm.reset();
+      }
+    });
 
     this.currentTip = this.relaxationTips[this.tipIndex];
 
@@ -92,6 +102,14 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
     }
   }
 
+  private getLocalDateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+
   changeTip(): void{
     this.tipIndex = (this.tipIndex + 1) % this.relaxationTips.length;
     this.currentTip = this.relaxationTips[this.tipIndex];
@@ -108,7 +126,7 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
 
       const dailyReportData = {
         employeeId: Number(this.user.id),
-        date: this.currentDate.toISOString().split('T')[0],
+        date: this.getLocalDateString(this.currentDate),
         dailyFactors: Object.keys(formValue).map(key => {
           let value = formValue[key];
 
