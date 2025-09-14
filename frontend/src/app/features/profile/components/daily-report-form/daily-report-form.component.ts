@@ -6,6 +6,7 @@ import {RELAXATION_TIPS} from '../../../../data/relaxation-tips';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {DailyDataService} from '../../services/daily-data.service';
 import {User} from '../../../../shared/user.model';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-daily-report-form',
@@ -37,12 +38,12 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
   // ako prosirujes nove faktore recimo "energy level" samo prosiri ovu listu
   dailyFactors = [
     { name: 'workingHours', placeholder: 'Working hours', type: 'number' },
-    { name: 'overtimeHours', placeholder: 'Overtime hours', type: 'number' },
-    { name: 'stressLevel', placeholder: 'Stress level', type: 'number' }, // promenjeno u number
-    { name: 'sleepQuality', placeholder: 'Sleep quality', type: 'text' },
-    { name: 'physicalActivity', placeholder: 'Physical activity', type: 'text' },
-    { name: 'symptoms', placeholder: 'Symptoms', type: 'text' }
+    { name: 'stressLevel', placeholder: 'Stress level (0–10)', type: 'number', min: 0, max: 10 },
+    { name: 'sleepQuality', placeholder: 'Sleep quality', type: 'textarea' },
+    { name: 'physicalActivity', placeholder: 'Physical activity', type: 'textarea' },
+    { name: 'symptoms', placeholder: 'Symptoms', type: 'textarea' }
   ];
+
 
   constructor(private fb: FormBuilder, private dailyDataService: DailyDataService) { }
 
@@ -50,9 +51,30 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
 
     const formControls: { [key: string]: FormControl } = {};
     this.dailyFactors.forEach(factor => {
-      formControls[factor.name] = new FormControl('');
+      if (factor.name === 'stressLevel') {
+        formControls[factor.name] = new FormControl('', [
+          Validators.min(0),
+          Validators.max(10)
+        ]);
+      } else {
+        formControls[factor.name] = new FormControl('');
+      }
     });
     this.dailyReportForm = this.fb.group(formControls);
+
+    const today = this.currentDate.toISOString().split('T')[0];
+
+    this.dailyDataService.getDailyReport(Number(this.user.id), today).subscribe(report => {
+      if (report) {
+        report.dailyFactors.forEach((f: { name: string, value: string | number }) => {
+          if (this.dailyReportForm.controls[f.name]) {
+            this.dailyReportForm.controls[f.name].setValue(f.value);
+          }
+        });
+      }
+      console.log(report.dailyFactors[0])
+    });
+
 
     this.currentTip = this.relaxationTips[this.tipIndex];
 
@@ -60,6 +82,8 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
       this.changeTip();
       }, 6000
     )
+
+
   }
 
   ngOnDestroy(): void{

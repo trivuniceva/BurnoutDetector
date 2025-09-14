@@ -4,6 +4,13 @@ public class FactorDto {
     private String name;
     private String value;
 
+    public FactorDto() {}
+
+    public FactorDto(String name, Object value) {
+        this.name = name;
+        this.value = value != null ? value.toString() : null;
+    }
+
     public String getName() {
         return name;
     }

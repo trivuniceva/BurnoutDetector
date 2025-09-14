@@ -20,4 +20,9 @@ export class DailyDataService {
 
     return this.http.post<any>(this.apiUrl, dailyReportData, httpOptions);
   }
+
+  getDailyReport(employeeId: number, date: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${employeeId}/${date}`);
+  }
+
 }

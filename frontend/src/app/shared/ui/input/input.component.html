@@ -1,5 +1,26 @@
-<input [type]="type"
-       [placeholder]="placeholder"
-       [value]="value"
-       (input)="onInput($any($event.target).value)"
-       (blur)="onTouched()">
+<ng-container [ngSwitch]="type">
+  <input *ngSwitchCase="'text'"
+         [placeholder]="placeholder"
+         [value]="value"
+         (input)="onInput($any($event.target).value)"
+         (blur)="onTouched()"
+  />
+
+  <input *ngSwitchCase="'number'"
+         type="number"
+         [placeholder]="placeholder"
+         [value]="value"
+         (input)="onNumberInput($event)"
+         (blur)="onTouched()"
+         [attr.min]="min"
+         [attr.max]="max"
+  />
+
+  <textarea *ngSwitchCase="'textarea'"
+            [placeholder]="placeholder"
+            [value]="value"
+            (input)="onInput($any($event.target).value)"
+            (blur)="onTouched()"
+            rows="3"
+            class="auto-textarea"></textarea>
+</ng-container>

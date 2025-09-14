@@ -5,11 +5,17 @@
   <form [formGroup]="dailyReportForm">
 
     <div *ngFor="let factor of dailyFactors; let i = index" class="form-group">
+      <label *ngIf="dailyReportForm.get(factor.name)?.value">
+        {{ factor.placeholder }}
+      </label>
       <app-input
         [type]="factor.type"
         [placeholder]="factor.placeholder"
-        [formControlName]="factor.name">
+        [formControlName]="factor.name"
+        [min]="factor.min"
+        [max]="factor.max">
       </app-input>
+
     </div>
 
     <app-button message="Submit" (clicked)="onSubmit()"></app-button>

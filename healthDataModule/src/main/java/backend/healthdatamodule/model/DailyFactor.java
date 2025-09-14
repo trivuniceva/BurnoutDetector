@@ -10,7 +10,7 @@ public class DailyFactor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double value;
+    private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
 
@@ -26,8 +26,8 @@ public class DailyFactor {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Double getValue() { return value; }
-    public void setValue(Double value) { this.value = value; }
+    public String getValue() { return value; }
+    public void setValue(String value) { this.value = value; }
 
     public DailyRecord getDailyRecord() { return dailyRecord; }
     public void setDailyRecord(DailyRecord dailyRecord) { this.dailyRecord = dailyRecord; }

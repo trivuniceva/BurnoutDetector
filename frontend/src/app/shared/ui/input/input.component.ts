@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, forwardRef} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgSwitch, NgSwitchCase} from '@angular/common';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR
@@ -9,15 +9,11 @@ import {
   selector: 'app-input',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    NgSwitch,
+    NgSwitchCase
   ],
-  template: `
-    <input [type]="type"
-           [placeholder]="placeholder"
-           [value]="value"
-           (input)="onInput($any($event.target).value)"
-           (blur)="onTouched()">
-  `,
+  templateUrl: './input.component.html',
   styleUrl: './input.component.scss',
   providers: [
     {
@@ -33,6 +29,10 @@ export class InputComponent implements ControlValueAccessor {
   private internalValue: any;
 
   @Output() valueChange = new EventEmitter<any>();
+
+  @Input() min?: number;
+  @Input() max?: number;
+
 
   onChange: (value: any) => void = () => {};
   onTouched: () => void = () => {};
@@ -64,4 +64,19 @@ export class InputComponent implements ControlValueAccessor {
     this.onChange(this.internalValue);
     this.valueChange.emit(this.internalValue);
   }
+
+  onNumberInput(event: Event) {
+    let inputValue = +(event.target as HTMLInputElement).value;
+
+    if (this.min !== undefined && inputValue < this.min) {
+      inputValue = this.min;
+    }
+    if (this.max !== undefined && inputValue > this.max) {
+      inputValue = this.max;
+    }
+
+    this.onInput(inputValue);
+    (event.target as HTMLInputElement).value = String(inputValue);
+  }
+
 }

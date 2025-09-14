@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,10 +24,20 @@ public class DailyDataController {
                 System.out.println(f.getName() + " = " + f.getValue())
         );
 
+        dailyDataService.processDailyReport(report);
+
         Map<String, String> response = new HashMap<>();
         response.put("message", "Daily report saved");
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{employeeId}/{date}")
+    public ResponseEntity<?> getDailyReport(@PathVariable Long employeeId,
+                                            @PathVariable String date){
+        DailyReportDto report = dailyDataService.getDailyReport(employeeId, LocalDate.parse(date));
+        return ResponseEntity.ok(report);
+
     }
 
 }
