@@ -5,7 +5,6 @@ import {StatCardComponent} from '../../shared/ui/stat-card/stat-card.component';
 import {DailyReportFormComponent} from './components/daily-report-form/daily-report-form.component';
 import {EditProfileComponent} from './components/edit-profile/edit-profile.component';
 import {SearchBarComponent} from '../../shared/ui/search-bar/search-bar.component';
-import {TwoColumnLayoutComponent} from '../../shared/ui/two-column-layout/two-column-layout.component';
 import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
 import {User} from '../../shared/user.model';
 import {AuthService} from '../../core/auth/auth.service';
@@ -22,7 +21,6 @@ import {HistoryTableComponent} from '../employee/history/history-table/history-t
     TabsComponent,
     EditProfileComponent,
     SearchBarComponent,
-    TwoColumnLayoutComponent,
     EntityHeaderComponent,
     NgIf,
     HistoryTableComponent

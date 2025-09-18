@@ -37,10 +37,9 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
 
   // ako prosirujes nove faktore recimo "energy level" samo prosiri ovu listu
   dailyFactors = [
-    { name: 'workingHours', placeholder: 'Working hours', type: 'number' },
+    { name: 'workingHours', placeholder: 'Working hours', type: 'number', min: 0, max: 24 },
     { name: 'stressLevel', placeholder: 'Stress level (0–10)', type: 'number', min: 0, max: 10 },
-    { name: 'sleepHours', placeholder: 'Sleep hours', type: 'number' },
-    // { name: 'sleepQuality', placeholder: 'Sleep quality', type: 'textarea' },
+    { name: 'sleepHours', placeholder: 'Sleep hours', type: 'number', min: 0, max: 24 },
     { name: 'physicalActivity', placeholder: 'Physical activity', type: 'textarea' },
     { name: 'symptoms', placeholder: 'Symptoms', type: 'textarea' }
   ];
@@ -50,16 +49,24 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
 
-    const formControls: { [key: string]: FormControl } = {};
+    const formControls: { [key: string]: any } = {}; // 'any' tip je fleksibilniji
     this.dailyFactors.forEach(factor => {
-      if (factor.name === 'stressLevel') {
-        formControls[factor.name] = new FormControl('', [
-          Validators.min(0),
-          Validators.max(10)
-        ]);
-      } else {
-        formControls[factor.name] = new FormControl('');
+      let validators = [];
+
+      // Sva numerička polja treba da budu obavezna
+      if (factor.type === 'number') {
+        validators.push(Validators.required);
       }
+
+      // Dodaj 'min' i 'max' validatore ako su definisani u dailyFactors
+      if (factor.min !== undefined) {
+        validators.push(Validators.min(factor.min));
+      }
+      if (factor.max !== undefined) {
+        validators.push(Validators.max(factor.max));
+      }
+
+      formControls[factor.name] = ['', validators]; // Poveži ime i listu validatora
     });
     this.dailyReportForm = this.fb.group(formControls);
 
@@ -100,6 +107,12 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
     if(this.intervalID){
       clearInterval(this.intervalID);
     }
+  }
+
+  // Pomoćna funkcija za proveru validnosti polja
+  isFieldInvalid(field: string): boolean {
+    const control = this.dailyReportForm.get(field);
+    return !!control && control.invalid && (control.dirty || control.touched);
   }
 
   private getLocalDateString(date: Date): string {
