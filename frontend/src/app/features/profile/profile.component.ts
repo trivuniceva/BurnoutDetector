@@ -4,13 +4,12 @@ import {TabsComponent} from '../../shared/ui/tabs/tabs.component';
 import {StatCardComponent} from '../../shared/ui/stat-card/stat-card.component';
 import {DailyReportFormComponent} from './components/daily-report-form/daily-report-form.component';
 import {EditProfileComponent} from './components/edit-profile/edit-profile.component';
-import {SearchBarComponent} from '../../shared/ui/search-bar/search-bar.component';
 import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
 import {User} from '../../shared/user.model';
 import {AuthService} from '../../core/auth/auth.service';
 import {ProfileService} from './services/profile.service';
-import {HistoryTableComponent} from '../employee/history/history-table/history-table.component';
 import {RecommendationCardComponent} from '../employee/history/recommendation-card/recommendation-card.component';
+import {HistoryPageComponent} from '../employee/history/history-page/history-page.component';
 
 @Component({
   selector: 'app-profile',
@@ -21,10 +20,9 @@ import {RecommendationCardComponent} from '../employee/history/recommendation-ca
     DailyReportFormComponent,
     TabsComponent,
     EditProfileComponent,
-    SearchBarComponent,
     EntityHeaderComponent,
     NgIf,
-    HistoryTableComponent,
+    HistoryPageComponent,
     RecommendationCardComponent
   ],
   templateUrl: './profile.component.html',
