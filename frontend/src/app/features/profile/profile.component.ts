@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit{
 
   activeTab = 'My Reports';
   tabs = ['My Reports', 'View History', 'Recommendations'];
+  hideSidebar = false;
 
   statCards = [
     { label: 'Sleep:', value: '3.4', period: 'per week', risk: 0.9 },
@@ -56,6 +57,12 @@ export class ProfileComponent implements OnInit{
     }
 
   }
+
+  onTabChange(tab: string) {
+    this.activeTab = tab;
+    this.hideSidebar = tab === 'View History' || tab === 'Recommendations';
+  }
+
 
   openEditPopup() {
     this.showEditPopup = true;

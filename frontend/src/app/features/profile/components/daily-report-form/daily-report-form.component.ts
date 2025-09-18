@@ -40,7 +40,7 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
     { name: 'workingHours', placeholder: 'Working hours', type: 'number' },
     { name: 'stressLevel', placeholder: 'Stress level (0–10)', type: 'number', min: 0, max: 10 },
     { name: 'sleepHours', placeholder: 'Sleep hours', type: 'number' },
-    { name: 'sleepQuality', placeholder: 'Sleep quality', type: 'textarea' },
+    // { name: 'sleepQuality', placeholder: 'Sleep quality', type: 'textarea' },
     { name: 'physicalActivity', placeholder: 'Physical activity', type: 'textarea' },
     { name: 'symptoms', placeholder: 'Symptoms', type: 'textarea' }
   ];
