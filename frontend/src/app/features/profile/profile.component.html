@@ -1,8 +1,5 @@
-<app-two-column-layout>
-  <div content-section>
-<!--    <div class="profile-header-container" (click)="openEditPopup()">-->
-<!--      <app-profile-header [user]="user"></app-profile-header>-->
-<!--    </div>-->
+<div class="two-column-container">
+  <div content-section [ngClass]="{ 'expanded': hideSidebar }">
 
     <div class="profile-header-container" (click)="openEditPopup()">
       <app-entity-header
@@ -14,7 +11,7 @@
       </app-entity-header>
     </div>
 
-    <app-tabs [tabs]="tabs" (tabChange)="activeTab = $event"></app-tabs>
+    <app-tabs [tabs]="tabs" (tabChange)="onTabChange($event)"></app-tabs>
 
     <div class="profile-cards-holder">
       <ng-container *ngIf="activeTab === 'My Reports'">
@@ -32,7 +29,9 @@
       </ng-container>
 
       <ng-container *ngIf="activeTab === 'View History'">
-        <p>This is the View History section.</p>
+        <div style="height: 26px"></div>
+        <app-search-bar></app-search-bar>
+        <app-history-table></app-history-table>
       </ng-container>
 
       <ng-container *ngIf="activeTab === 'Recommendations'">
@@ -41,12 +40,17 @@
     </div>
   </div>
 
-  <div sidebar-section>
+  <div sidebar-section [ngClass]="{ 'collapsed': hideSidebar }">
     <app-daily-report-form
-      *ngIf = "user"
+      *ngIf="user"
       [user]="user"
-      (formSubmit)="onDailyReportSubmit($event)"></app-daily-report-form>
+      (formSubmit)="onDailyReportSubmit($event)">
+    </app-daily-report-form>
   </div>
-</app-two-column-layout>
+</div>
 
-<app-edit-profile *ngIf="showEditPopup && user as nonNullUser" [user]="nonNullUser" (close)="closeEditPopup()"></app-edit-profile>
+<app-edit-profile
+  *ngIf="showEditPopup && user as nonNullUser"
+  [user]="nonNullUser"
+  (close)="closeEditPopup()">
+</app-edit-profile>
