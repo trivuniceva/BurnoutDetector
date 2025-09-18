@@ -29,7 +29,9 @@
       </ng-container>
 
       <ng-container *ngIf="activeTab === 'View History'">
-        <p>This is the View History section.</p>
+        <div style="height: 26px"></div>
+        <app-search-bar></app-search-bar>
+        <app-history-table></app-history-table>
       </ng-container>
 
       <ng-container *ngIf="activeTab === 'Recommendations'">

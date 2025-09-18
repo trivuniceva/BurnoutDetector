@@ -10,6 +10,7 @@ import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header
 import {User} from '../../shared/user.model';
 import {AuthService} from '../../core/auth/auth.service';
 import {ProfileService} from './services/profile.service';
+import {HistoryTableComponent} from '../employee/history/history-table/history-table.component';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,8 @@ import {ProfileService} from './services/profile.service';
     SearchBarComponent,
     TwoColumnLayoutComponent,
     EntityHeaderComponent,
-    NgIf
+    NgIf,
+    HistoryTableComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
