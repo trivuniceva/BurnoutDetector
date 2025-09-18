@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule, MatCalendar } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +21,8 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatIconModule,
     MatNativeDateModule,
-    MatCardModule
+    MatCardModule,
+    NgFor,
   ],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
@@ -29,35 +30,88 @@ import { MatCardModule } from '@angular/material/card';
 export class CalendarComponent {
   startDate: Date | null = null;
   endDate: Date | null = null;
+  hoveredDate: Date | null = null;
 
   @Output() dateRangeSelected = new EventEmitter<{ start: Date | null, end: Date | null }>();
-  selected: Date | null = null;
+  currentMonth: Date = new Date();
+  datesInMonth: Date[] = [];
+  today: Date = new Date(); // Added this property
+  firstDayOfWeek: number = 0; // Added this property
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor() {}
+
+  ngOnInit(): void {
+    this.updateCalendar();
+  }
+
+  prevMonth() {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, 1);
+    this.updateCalendar();
+  }
+
+  nextMonth() {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
+    this.updateCalendar();
+  }
+
+  updateCalendar() {
+    const year = this.currentMonth.getFullYear();
+    const month = this.currentMonth.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    this.firstDayOfWeek = firstDay.getDay(); // Sunday is 0, Monday is 1, etc.
+
+    this.datesInMonth = [];
+    for (let day = firstDay.getDate(); day <= lastDay.getDate(); day++) {
+      this.datesInMonth.push(new Date(year, month, day));
+    }
+  }
+
+  isSameDay(d1: Date, d2: Date | null): boolean {
+    if (!d2) return false;
+    return d1.getDate() === d2.getDate() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getFullYear() === d2.getFullYear();
+  }
+
+  isInRange(date: Date): boolean {
+    if (!this.startDate) return false;
+
+    if (this.startDate && !this.endDate && this.hoveredDate) {
+      const [start, end] = this.startDate < this.hoveredDate ?
+        [this.startDate, this.hoveredDate] :
+        [this.hoveredDate, this.startDate];
+      return date >= start && date <= end;
+    }
+
+    if (this.startDate && this.endDate) {
+      return date >= this.startDate && date <= this.endDate;
+    }
+
+    return this.isSameDay(date, this.startDate);
+  }
 
   onDateClick(date: Date) {
     if (!this.startDate || (this.startDate && this.endDate)) {
       this.startDate = date;
       this.endDate = null;
-    } else if (date > this.startDate) {
+    } else if (!this.endDate) {
       this.endDate = date;
+      if (this.endDate < this.startDate) {
+        [this.startDate, this.endDate] = [this.endDate, this.startDate];
+      }
       this.dateRangeSelected.emit({ start: this.startDate, end: this.endDate });
-    } else {
-      this.startDate = date;
-      this.endDate = null;
     }
-    this.cdr.markForCheck();
   }
 
-  getDateClass(date: Date) {
-    if (!date) return '';
-    if (this.startDate && this.endDate) {
-      if (date > this.startDate && date < this.endDate) return 'in-range';
-      if (date.getTime() === this.startDate.getTime()) return 'start-date';
-      if (date.getTime() === this.endDate.getTime()) return 'end-date';
-    } else if (this.startDate && date.getTime() === this.startDate.getTime()) {
-      return 'start-date';
+  onDateHover(date: Date) {
+    if (this.startDate && !this.endDate) {
+      this.hoveredDate = date;
     }
-    return '';
+  }
+
+  getFormattedDate(date: Date): string {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   }
 }
