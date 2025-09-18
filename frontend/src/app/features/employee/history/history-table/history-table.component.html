@@ -1,1 +1,39 @@
-<p>history-table works!</p>
+<div class="history-table-container">
+  <h2>History of Daily Records</h2>
+  <div *ngIf="historyRecords.length > 0; else noRecords">
+    <table>
+      <thead>
+      <tr>
+        <th><span>Date</span></th>
+        <th><span>Working Hours</span></th>
+        <th><span>Stress Level</span></th>
+        <th><span>Symptoms</span></th>
+        <th><span>Sleep Hours</span></th>
+        <th><span>Risk Level</span></th>
+        <th><span>Recommendation</span></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let record of historyRecords">
+        <td>{{ record.date | date: 'mediumDate' }}</td>
+        <td>{{ record.workingHours }}</td>
+        <td>{{ record.stressLevel }}</td>
+        <td>{{ record.symptoms }}</td>
+        <td>{{ record.sleepHours }}</td>
+        <td [ngClass]="getRiskClass(record.riskLevel)">
+          {{ record.riskLevel }}
+        </td>
+        <td>
+          <span class="recommendation-text">{{ record.recommendation }}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noRecords>
+    <div class="no-records-message">
+      <p>No historical records found yet.</p>
+      <p>Fill out a daily report to see your history here.</p>
+    </div>
+  </ng-template>
+</div>
