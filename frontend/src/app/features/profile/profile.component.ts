@@ -10,6 +10,7 @@ import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header
 import {User} from '../../shared/user.model';
 import {AuthService} from '../../core/auth/auth.service';
 import {ProfileService} from './services/profile.service';
+import {HistoryTableComponent} from '../employee/history/history-table/history-table.component';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,8 @@ import {ProfileService} from './services/profile.service';
     SearchBarComponent,
     TwoColumnLayoutComponent,
     EntityHeaderComponent,
-    NgIf
+    NgIf,
+    HistoryTableComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -34,6 +36,7 @@ export class ProfileComponent implements OnInit{
 
   activeTab = 'My Reports';
   tabs = ['My Reports', 'View History', 'Recommendations'];
+  hideSidebar = false;
 
   statCards = [
     { label: 'Sleep:', value: '3.4', period: 'per week', risk: 0.9 },
@@ -56,6 +59,12 @@ export class ProfileComponent implements OnInit{
     }
 
   }
+
+  onTabChange(tab: string) {
+    this.activeTab = tab;
+    this.hideSidebar = tab === 'View History' || tab === 'Recommendations';
+  }
+
 
   openEditPopup() {
     this.showEditPopup = true;
