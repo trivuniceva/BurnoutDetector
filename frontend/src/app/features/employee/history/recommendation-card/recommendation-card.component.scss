@@ -1,0 +1,48 @@
+@mixin risk-color($color) {
+  border-left: 6px solid $color;
+}
+
+.recommendation-card {
+  background-color: #f7f7f7;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+
+&:hover {
+   transform: translateY(-4px);
+ }
+}
+
+.header {
+  padding: 16px;
+  border-left: 6px solid #ccc;
+}
+
+.header.low-risk {
+  @include risk-color(#4caf50);
+}
+
+.header.medium-risk {
+  @include risk-color(#ff9800);
+}
+
+.header.high-risk {
+  @include risk-color(#f44336);
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.content {
+  padding: 16px;
+p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+}

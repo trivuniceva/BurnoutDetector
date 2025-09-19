@@ -1,0 +1,134 @@
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
+.calendar-header .month-year {
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+  flex-grow: 1;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.calendar-header .navigation-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #5f6368;
+  padding: 0 8px;
+  transition: color 0.2s ease;
+}
+
+.calendar-header .navigation-button:hover {
+  color: #202124;
+}
+
+.calendar-header .navigation-button:disabled {
+  color: #bdc1c6;
+  cursor: not-allowed;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #70757a;
+  padding: 10px 0;
+}
+
+.calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  margin: 5px auto;
+  font-size: 14px;
+  color: #5f6368;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.calendar-day:hover {
+  background-color: #f1f3f4;
+}
+
+.calendar-day.current-day {
+  border: 2px solid #394238;
+  color: #4d594c;
+  font-weight: 600;
+}
+
+.calendar-day.selected {
+  background-color: #4d594c;
+  color: #fff;
+  font-weight: 600;
+}
+
+.calendar-day.selected:hover {
+  background-color: #4d594c;
+}
+
+.calendar-day.unavailable {
+  color: #9aa0a6;
+  cursor: not-allowed;
+  background: none;
+}
+
+.calendar-day.unavailable:hover {
+  background: none;
+}
+
+.navigation-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #394238;
+  padding: 0 8px;
+  transition: color 0.2s ease;
+  /* Dodajte flexbox da centrirate ikonu */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-button:hover {
+  color: #acb8ab;
+}
+
+.prev-icon::before {
+  content: "‹";
+}
+
+.next-icon::before {
+  content: "›";
+}

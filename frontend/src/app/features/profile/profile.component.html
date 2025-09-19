@@ -16,7 +16,6 @@
     <div class="profile-cards-holder">
       <ng-container *ngIf="activeTab === 'My Reports'">
         <div style="height: 26px"></div>
-        <app-search-bar></app-search-bar>
         <div class="stats-cards">
           <app-stat-card
             *ngFor="let card of statCards"
@@ -30,13 +29,27 @@
 
       <ng-container *ngIf="activeTab === 'View History'">
         <div style="height: 26px"></div>
-        <app-search-bar></app-search-bar>
-        <app-history-table></app-history-table>
+        <app-history-page></app-history-page>
       </ng-container>
 
       <ng-container *ngIf="activeTab === 'Recommendations'">
-        <p>This is the Recommendations section.</p>
+        <div style="height: 26px"></div>
+        <div class="recommendations-container">
+          <ng-container *ngIf="recommendations.length > 0; else noRecommendations">
+            <app-recommendation-card
+              *ngFor="let rec of recommendations"
+              [recommendation]="rec">
+            </app-recommendation-card>
+          </ng-container>
+
+          <ng-template #noRecommendations>
+            <div class="no-recommendations-message">
+              <p>Trenutno nema novih preporuka. Nastavite sa unosom podataka za analizu trendova.</p>
+            </div>
+          </ng-template>
+        </div>
       </ng-container>
+
     </div>
   </div>
 
