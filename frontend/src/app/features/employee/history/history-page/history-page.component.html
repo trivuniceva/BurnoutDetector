@@ -1,5 +1,8 @@
-
 <div class="page-container">
-  <app-history-table></app-history-table>
+  <app-history-table
+    [startDate]="selectedStartDate"
+    [endDate]="selectedEndDate">
+  </app-history-table>
+
   <app-calendar (dateRangeSelected)="onDateRangeSelected($event)"></app-calendar>
 </div>

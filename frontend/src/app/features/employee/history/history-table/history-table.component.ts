@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, Input, OnChanges, SimpleChanges} from '@angular/core'; // Dodajte Input i OnChanges
 import {CommonModule, NgIf} from '@angular/common';
 
 export interface DailyRecord {
@@ -22,13 +22,42 @@ export interface DailyRecord {
   templateUrl: './history-table.component.html',
   styleUrl: './history-table.component.scss'
 })
-export class HistoryTableComponent implements OnInit{
+export class HistoryTableComponent implements OnInit, OnChanges {
+  @Input() startDate: Date | null = null;
+  @Input() endDate: Date | null = null;
+
   historyRecords: DailyRecord[] = [];
+  filteredRecords: DailyRecord[] = [];
 
   constructor() { }
 
   ngOnInit(): void {
     this.historyRecords = this.getMockData();
+    this.filterRecords();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['startDate'] || changes['endDate']) {
+      this.filterRecords();
+    }
+  }
+
+  filterRecords(): void {
+    if (!this.startDate && !this.endDate) {
+      this.filteredRecords = [...this.historyRecords];
+    } else {
+      this.filteredRecords = this.historyRecords.filter(record => {
+        const recordDate = new Date(record.date.getFullYear(), record.date.getMonth(), record.date.getDate());
+
+        if (this.startDate && this.endDate) {
+          return recordDate >= this.startDate && recordDate <= this.endDate;
+        }
+        if (this.startDate) {
+          return recordDate.getTime() === this.startDate.getTime();
+        }
+        return false;
+      });
+    }
   }
 
   getRiskClass(riskLevel: string): string {
@@ -79,5 +108,4 @@ export class HistoryTableComponent implements OnInit{
       }
     ];
   }
-
 }
