@@ -40,4 +40,11 @@ public class DailyDataController {
 
     }
 
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<?> getAllReports(@PathVariable Long employeeId){
+        return ResponseEntity.ok(dailyDataService.getAllReports(employeeId));
+    }
+
+
+
 }

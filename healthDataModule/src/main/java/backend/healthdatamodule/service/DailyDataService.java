@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DailyDataService {
@@ -87,5 +89,21 @@ public class DailyDataService {
         );
 
         return dto;
+    }
+
+    public List<DailyReportDto> getAllReports(Long employeeId) {
+        List<DailyRecord> records = dailyRecordRepository.findAllByEmployeeId(employeeId);
+
+        return records.stream().map(record -> {
+            DailyReportDto dto = new DailyReportDto();
+            dto.setEmployeeId(employeeId);
+            dto.setDate(record.getDate());
+            dto.setDailyFactors(
+                    record.getDailyFactors().stream()
+                            .map(f -> new FactorDto(f.getFactorType().getName(), f.getValue()))
+                            .collect(Collectors.toList())
+            );
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

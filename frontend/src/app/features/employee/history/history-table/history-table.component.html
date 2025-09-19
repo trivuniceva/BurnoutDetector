@@ -4,28 +4,20 @@
     <table>
       <thead>
       <tr>
-        <th><span>Date</span></th>
-        <th><span>Working Hours</span></th>
-        <th><span>Stress Level</span></th>
-        <th><span>Symptoms</span></th>
-        <th><span>Sleep Hours</span></th>
-        <th><span>Risk Level</span></th>
-        <th><span>Recommendation</span></th>
+        <th>Date</th>
+        <th>Working Hours</th>
+        <th>Stress Level</th>
+        <th>Symptoms</th>
+        <th>Sleep Hours</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let record of filteredRecords">
         <td>{{ record.date | date: 'mediumDate' }}</td>
-        <td>{{ record.workingHours }}</td>
-        <td>{{ record.stressLevel }}</td>
-        <td>{{ record.symptoms }}</td>
-        <td>{{ record.sleepHours }}</td>
-        <td [ngClass]="getRiskClass(record.riskLevel)">
-          {{ record.riskLevel }}
-        </td>
-        <td>
-          <span class="recommendation-text">{{ record.recommendation }}</span>
-        </td>
+        <td>{{ getFactorValue(record, 'workingHours') }}</td>
+        <td>{{ getFactorValue(record, 'stressLevel') }}</td>
+        <td>{{ getFactorValue(record, 'symptoms') }}</td>
+        <td>{{ getFactorValue(record, 'sleepHours') }}</td>
       </tr>
       </tbody>
     </table>
