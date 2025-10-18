@@ -173,16 +173,24 @@ export class ProfileComponent implements OnInit{
     this.weeklyReport.getWeeklyReport(user.id, weekStart, weekEnd).subscribe({
       next: (report) => {
 
-        const sleepRisk = (report.sleep ?? 0) / 10; // Sleep 0-10 skala
+        const riskMap: { [key: string]: number } = {
+          'Nizak': 0.2,
+          'Srednji': 0.5,
+          'Visok': 0.85
+        };
+
+        const sleepRisk = (report.avgSleepHours ?? 0) / 10; // Sleep 0-10 skala
         const stressRisk = (report.avgStressLevel ?? 0) / 10; // Stress 0-10
         const workHoursRisk = (report.avgWorkingHours ?? 12) / 12; // radne sate recimo 0-12h
+        const burnoutRiskValue = riskMap[report.riskLevel] ?? 0;
 
         console.log(report)
+
         this.statCards = [
-          {label: 'Sleep', value: report.sleep?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.sleep ?? 8)/10},
-          {label: 'Stress', value: report.avgStressLevel?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgStressLevel ?? 0)/10},
-          {label: 'Working hours', value: report.avgWorkingHours?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgWorkingHours ?? 0)/12},
-          {label: 'Burnout risk', value: (report.riskLevel ? report.riskLevel * 10 : 0).toFixed(1), period: 'per week', risk: report.riskLevel ?? 0},
+          { label: 'Sleep', value: report.avgSleepHours?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgSleepHours ?? 8) / 10 },
+          { label: 'Stress', value: report.avgStressLevel?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgStressLevel ?? 0) / 10 },
+          { label: 'Working hours', value: report.avgWorkingHours?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgWorkingHours ?? 0) / 12 },
+          { label: 'Burnout risk', value: report.riskLevel ?? 'N/A', period: 'per week', risk: burnoutRiskValue },
         ];
 
       },

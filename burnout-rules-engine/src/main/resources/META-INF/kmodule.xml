@@ -1,6 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <kmodule xmlns="http://www.drools.org/xsd/kmodule">
-    <kbase name="rules" packages="rules" default="true">
-        <ksession name="ksession-rules" type="stateful"/>
+
+    <kbase name="dailyRulesKBase" packages="rules.daily">
+        <ksession name="ksession-daily-rules"/>
     </kbase>
+
+    <kbase name="weeklyRulesKBase" packages="rules.weekly">
+        <ksession name="ksession-weekly-rules"/>
+    </kbase>
+
 </kmodule>

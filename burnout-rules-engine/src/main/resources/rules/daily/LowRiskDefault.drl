@@ -1,0 +1,18 @@
+package rules.daily;
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.DailyRecordFact;
+
+rule "Low Risk Default"
+salience -10
+when
+    $fact: DailyRecordFact()
+then
+    if (riskResult.getRiskLevel() == null) {
+        riskResult.setRiskLevel("Nizak");
+        riskResult.setRecommendation("Vaši parametri su stabilni. Nastavite sa zdravim navikama!");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("✅ Aktivirano pravilo: Low Risk Default");
+    }
+end

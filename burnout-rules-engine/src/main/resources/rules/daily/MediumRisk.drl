@@ -1,0 +1,17 @@
+package rules.daily;
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.DailyRecordFact;
+
+rule "Medium Risk"
+when
+    $fact: DailyRecordFact(stressLevel > 5, workingHours > 10)
+then
+    if (riskResult.getRiskLevel() == null) {
+        riskResult.setRiskLevel("Srednji");
+        riskResult.setRecommendation("Preporučujemo kraću pauzu i smanjenje prekovremenog rada u naredna 3 dana.");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("⚠️ Aktivirano pravilo: Medium Risk");
+    }
+end

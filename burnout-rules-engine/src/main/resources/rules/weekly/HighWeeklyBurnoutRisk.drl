@@ -1,0 +1,15 @@
+package rules.weekly;
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+
+rule "High Weekly Burnout Risk"
+when
+    $f: WeeklyRecordFact(avgWorkingHours > 9, avgStressLevel >= 8, avgSleepHours < 5)
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("Zaposleni pokazuje znake hroničnog stresa. Predlaže se odmor i razgovor sa menadžerom.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🔥 Aktivirano pravilo: High Weekly Burnout Risk");
+end
