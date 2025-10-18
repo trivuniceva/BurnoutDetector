@@ -173,8 +173,14 @@ public class DailyDataService {
                 .average()
                 .orElse(0);
 
+        double avgSleep = records.stream()
+                .mapToDouble(r -> getFactorValue(r, "sleepHours"))
+                .average()
+                .orElse(0);
+
         report.setAvgWorkingHours(avgWorkingHours);
         report.setAvgStressLevel(avgStress);
+        report.setSleep(avgSleep);
 
         return report;
     }

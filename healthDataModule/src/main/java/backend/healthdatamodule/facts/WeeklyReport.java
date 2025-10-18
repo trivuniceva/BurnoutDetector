@@ -16,6 +16,7 @@ public class WeeklyReport {
     private int overtimeIncreaseStreak;
     private int riskLevel = 0; // 0-low, 1-medium, 2-high
     private List<String> recommendations = new ArrayList<>();
+    private double sleep;
 
     public Long getEmployeeId() {
         return employeeId;
@@ -95,5 +96,13 @@ public class WeeklyReport {
 
     public void setRecommendations(List<String> recommendations) {
         this.recommendations = recommendations;
+    }
+
+    public double getSleep() {
+        return sleep;
+    }
+
+    public void setSleep(double sleep) {
+        this.sleep = sleep;
     }
 }

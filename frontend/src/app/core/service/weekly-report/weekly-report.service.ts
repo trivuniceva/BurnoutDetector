@@ -18,8 +18,9 @@ export class WeeklyReportService {
 
   constructor(private http: HttpClient) {}
 
-  getWeeklyReport(userId: number): Observable<WeeklyReport> {
-    return this.http.get<WeeklyReport>(`${this.apiUrl}/${userId}`);
+  getWeeklyReport(employeeId: number, start: Date, end: Date): Observable<WeeklyReport> {
+    const params = `?startDate=${start.toISOString().split('T')[0]}&endDate=${end.toISOString().split('T')[0]}`;
+    return this.http.get<WeeklyReport>(`${this.apiUrl}/weekly/${employeeId}${params}`);
   }
 
 }
