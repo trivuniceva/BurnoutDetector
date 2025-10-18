@@ -10,6 +10,7 @@ import {AuthService} from '../../core/auth/auth.service';
 import {ProfileService} from './services/profile.service';
 import {RecommendationCardComponent} from '../employee/history/recommendation-card/recommendation-card.component';
 import {HistoryPageComponent} from '../employee/history/history-page/history-page.component';
+import {WeeklyReportService} from './services/weekly-report.service';
 
 @Component({
   selector: 'app-profile',
@@ -37,17 +38,13 @@ export class ProfileComponent implements OnInit{
   hideSidebar = false;
 
   recommendations: any[] = [];
+  statCards: { label: string; value: string; period: string; risk: number }[] = [];
 
-
-  statCards = [
-    { label: 'Sleep:', value: '3.4', period: 'per week', risk: 0.9 },
-    { label: 'Stres:', value: '6.3', period: 'per week', risk: 0.5 },
-    { label: 'Working hours:', value: '52', period: 'per week', risk: 0.8 },
-    { label: 'Burnout risk:', value: '7.2', period: 'per week', risk: 0.8 },
-  ];
-
-
-  constructor(private authService: AuthService, private profileService: ProfileService) { }
+  constructor(
+    private authService: AuthService,
+    private weeklyReport: WeeklyReportService,
+    private profileService: ProfileService
+  ) { }
 
   ngOnInit() {
     this.recommendations = [
@@ -91,6 +88,25 @@ export class ProfileComponent implements OnInit{
         ? this.profileService.getProfilePictureUrl(this.authService.getUser().profilePic)
         : '/assets/images/default-profile.png';
       this.user = user;
+    }
+
+    if(user.id){
+      this.weeklyReport.getWeeklyReport(user.id).subscribe({
+        next: (report) => {
+          this.statCards = [
+            { label: 'Sleep:', value: report.sleep?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
+            { label: 'Stress:', value: report.avgStressLevel?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
+            { label: 'Working hours:', value: report.avgWorkingHours?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
+            { label: 'Burnout risk:', value: (report.riskLevel ? report.riskLevel*10 : 0).toFixed(1), period: 'per week', risk: report.riskLevel ?? 0 },
+          ];
+
+          this.recommendations = report.recommendations;
+          console.log(this.statCards);
+        },
+        error: (err) => {
+          console.error('Greška pri učitavanju izveštaja', err);
+        }
+      });
     }
 
   }

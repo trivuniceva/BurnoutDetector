@@ -37,7 +37,7 @@ export class StatCardComponent {
   private getRiskColor(riskValue: number): string {
     // Definirajte logiku za određivanje boje na osnovu rizika
     // Ovo bi trebalo da bude isto kao i za risk bar
-    if (riskValue <= 0.3) {
+    if (riskValue < 0.3) {
       return 'var(--color-risk-green)';
     } else if (riskValue <= 0.6) {
       return 'var(--color-risk-orange)';

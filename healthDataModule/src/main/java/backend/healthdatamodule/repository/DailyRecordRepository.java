@@ -16,4 +16,6 @@ public interface DailyRecordRepository extends JpaRepository<DailyRecord, Long> 
     Optional<DailyRecord> findByEmployeeIdAndDate(@Param("employeeId") Long employeeId, @Param("date") LocalDate date);
 
     List<DailyRecord> findAllByEmployeeId(Long employeeId);
+
+    List<DailyRecord> findAllByEmployeeIdAndDateBetween(Long employeeId, LocalDate weekStart, LocalDate weekEnd);
 }
