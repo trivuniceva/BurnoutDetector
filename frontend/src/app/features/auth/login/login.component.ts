@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {InputComponent} from '../../../shared/ui/input/input.component';
 import {ButtonComponent} from '../../../shared/ui/button/button.component';
-import {AuthService} from '../../../core/auth/auth.service';
+import {AuthService} from '../../../core/service/auth/auth.service';
 
 @Component({
   selector: 'app-login',

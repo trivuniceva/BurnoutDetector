@@ -3,23 +3,31 @@ package backend.healthdatamodule.service;
 import backend.healthdatamodule.dto.BurnoutInput;
 import backend.healthdatamodule.dto.DailyReportDto;
 import backend.healthdatamodule.dto.FactorDto;
+import backend.healthdatamodule.facts.WeeklyReport;
 import backend.healthdatamodule.model.DailyFactor;
 import backend.healthdatamodule.model.DailyRecord;
 import backend.healthdatamodule.model.FactorType;
 import backend.healthdatamodule.repository.DailyRecordRepository;
 import backend.healthdatamodule.repository.FactorTypeRepository;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+import burnoutrulesengine.burnoutrulesengine.model.DailyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.service.BurnoutRulesService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class DailyDataService {
 
     @Autowired
-    private BurnoutService burnoutService;
+    private BurnoutRulesService burnoutRulesService;
 
     @Autowired
     private DailyRecordRepository dailyRecordRepository;
@@ -28,47 +36,86 @@ public class DailyDataService {
     private FactorTypeRepository factorTypeRepository;
 
     @Transactional
-    public void processDailyReport(DailyReportDto dailyReportDto) {
+    public BurnoutRisk processDailyReport(DailyReportDto dailyReportDto) {
 
-        Long employeeId = dailyReportDto.getEmployeeId();
-        LocalDate date = dailyReportDto.getDate();
+        DailyRecord recordToSave = createDailyRecordFromDto(dailyReportDto);
 
-        DailyRecord dailyRecord = dailyRecordRepository.findByEmployeeIdAndDate(employeeId, date)
-                .orElseGet(() -> new DailyRecord(employeeId, date));
+        DailyRecord dailyRecord = dailyRecordRepository.save(recordToSave);
 
-        if (dailyRecord.getDailyFactors() == null) {
-            dailyRecord.setDailyFactors(new ArrayList<>());
-        } else {
-            dailyRecord.getDailyFactors().clear();
-        }
+        DailyRecordFact droolsFact = convertToDroolsFact(dailyRecord);
 
-        for (FactorDto f : dailyReportDto.getDailyFactors()) {
+        BurnoutRisk riskResult = burnoutRulesService.evaluateRisk(droolsFact);
 
-            FactorType factorType = factorTypeRepository.findByName(f.getName())
-                    .orElseGet(() -> {
-                        FactorType newType = new FactorType();
-                        newType.setName(f.getName());
-                        newType.setUnit(null);
-                        return factorTypeRepository.save(newType);
-                    });
+        return riskResult;
+    }
+
+    private DailyRecord createDailyRecordFromDto(DailyReportDto dto) {
+        DailyRecord record = new DailyRecord();
+        record.setEmployeeId(dto.getEmployeeId());
+        record.setDate(dto.getDate() != null ? dto.getDate() : LocalDate.now());
+
+        List<DailyFactor> factors = dto.getDailyFactors().stream().map(factorDto -> {
+
+            Optional<FactorType> factorTypeOptional = factorTypeRepository.findByName(factorDto.getName());
+
+            FactorType factorType = factorTypeOptional.orElseGet(() -> {
+                FactorType newType = new FactorType();
+                newType.setName(factorDto.getName());
+                return newType;
+            });
 
             DailyFactor dailyFactor = new DailyFactor();
-            dailyFactor.setDailyRecord(dailyRecord);
             dailyFactor.setFactorType(factorType);
+            dailyFactor.setValue((String) factorDto.getValue());
+            dailyFactor.setDailyRecord(record);
+            return dailyFactor;
 
-            if (f.getValue() != null) {
-                String value = f.getValue() != null ? f.getValue().toString() : null;
-                dailyFactor.setValue(value);
+        }).collect(Collectors.toList());
 
-            } else {
-                dailyFactor.setValue(null);
-            }
-
-            dailyRecord.getDailyFactors().add(dailyFactor);
-        }
-
-        dailyRecordRepository.save(dailyRecord);
+        record.setDailyFactors(factors);
+        return record;
     }
+
+    private DailyRecordFact convertToDroolsFact(DailyRecord record) {
+        DailyRecordFact fact = new DailyRecordFact();
+
+        fact.setEmployeeId(record.getEmployeeId());
+
+        fact.setWorkingHours(getFactorDoubleValue(record, "workingHours"));
+        fact.setStressLevel(getFactorIntValue(record, "stressLevel"));
+        fact.setSleepHours(getFactorDoubleValue(record, "sleepHours"));
+
+        return fact;
+    }
+
+    private int getFactorIntValue(DailyRecord record, String factorName) {
+        return record.getDailyFactors().stream()
+                .filter(f -> f.getFactorType().getName().equals(factorName))
+                .map(f -> {
+                    try {
+                        return f.getValue() != null ? Integer.parseInt(f.getValue()) : 0; // parsiranje kao int
+                    } catch (NumberFormatException e) {
+                        return 0;
+                    }
+                })
+                .findFirst()
+                .orElse(0);
+    }
+
+    private double getFactorDoubleValue(DailyRecord record, String factorName) {
+        return record.getDailyFactors().stream()
+                .filter(f -> f.getFactorType().getName().equals(factorName))
+                .map(f -> {
+                    try {
+                        return f.getValue() != null ? Double.parseDouble(f.getValue()) : 0.0; // parsiranje kao double
+                    } catch (NumberFormatException e) {
+                        return 0.0;
+                    }
+                })
+                .findFirst()
+                .orElse(0.0);
+    }
+
 
     public DailyReportDto getDailyReport(Long employeeId, LocalDate date) {
         DailyRecord record = dailyRecordRepository.findByEmployeeIdAndDate(employeeId, date)
@@ -80,12 +127,63 @@ public class DailyDataService {
         DailyReportDto dto = new DailyReportDto();
         dto.setEmployeeId(employeeId);
         dto.setDate(date);
+
         dto.setDailyFactors(
                 record.getDailyFactors().stream()
-                        .map(f -> new FactorDto(f.getFactorType().getName(), f.getValue()))
-                        .toList()
+                        .<FactorDto>map(f -> new FactorDto(f.getFactorType().getName(), f.getValue()))
+                        .collect(Collectors.toList())
         );
 
         return dto;
+    }
+
+    public List<DailyReportDto> getAllReports(Long employeeId) {
+        List<DailyRecord> records = dailyRecordRepository.findAllByEmployeeId(employeeId);
+
+        return records.stream().map(record -> {
+            DailyReportDto dto = new DailyReportDto();
+            dto.setEmployeeId(employeeId);
+            dto.setDate(record.getDate());
+
+            // KRITIČNA LINIJA: Koristimo Collectors.toList()
+            dto.setDailyFactors(
+                    record.getDailyFactors().stream()
+                            .map(f -> new FactorDto(f.getFactorType().getName(), f.getValue()))
+                            .collect(Collectors.toList())
+            );
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public WeeklyReport calculateWeeklyReport(Long employeeId, LocalDate weekStart, LocalDate weekEnd) {
+        List<DailyRecord> records = dailyRecordRepository.findAllByEmployeeIdAndDateBetween(employeeId, weekStart, weekEnd);
+
+        WeeklyReport report = new WeeklyReport();
+        report.setEmployeeId(employeeId);
+        report.setStartDate(weekStart);
+        report.setEndDate(weekEnd);
+
+        double avgWorkingHours = records.stream()
+                .mapToDouble(r -> getFactorValue(r, "workingHours"))
+                .average()
+                .orElse(0);
+
+        double avgStress = records.stream()
+                .mapToDouble(r -> getFactorValue(r, "stressLevel"))
+                .average()
+                .orElse(0);
+
+        report.setAvgWorkingHours(avgWorkingHours);
+        report.setAvgStressLevel(avgStress);
+
+        return report;
+    }
+
+    private double getFactorValue(DailyRecord record, String factorName) {
+        return record.getDailyFactors().stream()
+                .filter(f -> f.getFactorType().getName().equals(factorName))
+                .map(f -> f.getValue() != null ? Double.parseDouble(f.getValue()) : 0)
+                .findFirst()
+                .orElse(0.0);
     }
 }

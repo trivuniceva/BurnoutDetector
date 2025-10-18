@@ -4,9 +4,10 @@ import {InputComponent} from '../../../../shared/ui/input/input.component';
 import {CommonModule} from '@angular/common';
 import {RELAXATION_TIPS} from '../../../../data/relaxation-tips';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {DailyDataService} from '../../services/daily-data.service';
-import {User} from '../../../../shared/user.model';
+import {DailyDataService} from '../../../../core/service/daily-data/daily-data.service';
+import {User} from '../../../../core/model/user.model';
 import { Validators } from '@angular/forms';
+import {BurnoutRisk} from '../../../../core/model/burnout-risk.model';
 
 @Component({
   selector: 'app-daily-report-form',
@@ -23,7 +24,7 @@ import { Validators } from '@angular/forms';
 })
 export class DailyReportFormComponent implements OnInit, OnDestroy{
   @Input() user!: User;
-  @Output() formSubmit = new EventEmitter<any>();
+  @Output() formSubmit = new EventEmitter<BurnoutRisk>();
   // currentDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   currentDate: Date = new Date();
 
@@ -96,11 +97,9 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
     this.currentTip = this.relaxationTips[this.tipIndex];
 
     this.intervalID = setInterval(() => {
-      this.changeTip();
+        this.changeTip();
       }, 6000
     )
-
-
   }
 
   ngOnDestroy(): void{
@@ -158,9 +157,12 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
       };
 
       this.dailyDataService.processDailyReport(dailyReportData).subscribe(
-        response => {
-          console.log('Backend response:', response);
-          alert("Thank you! You have successfully submitted your daily report.");
+        (riskResponse: BurnoutRisk) => {
+          console.log('Drools Risk Response:', riskResponse);
+
+          this.formSubmit.emit(riskResponse);
+
+          alert(`Daily report saved. Burnout Risk: ${riskResponse.riskLevel}. Recommendation: ${riskResponse.recommendation}`);
           this.dailyReportForm.reset();
         },
         error => {
