@@ -2,6 +2,7 @@ package backend.healthdatamodule.controller;
 
 import backend.healthdatamodule.facts.WeeklyReport;
 import backend.healthdatamodule.service.DailyDataService;
+import backend.healthdatamodule.service.WeeklyReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 public class WeeklyReportController {
 
     @Autowired
-    private DailyDataService dailyDataService;
+    private WeeklyReportService weeklyReportService;
 
     @GetMapping("/weekly/{employeeId}")
     public ResponseEntity<WeeklyReport> getWeeklyReport(
@@ -24,7 +25,7 @@ public class WeeklyReportController {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
 
-        WeeklyReport report = dailyDataService.calculateWeeklyReport(employeeId, start, end);
+        WeeklyReport report = weeklyReportService.calculateWeeklyReport(employeeId, start, end);
         return ResponseEntity.ok(report);
     }
 
