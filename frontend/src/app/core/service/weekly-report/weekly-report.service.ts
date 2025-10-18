@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {WeeklyReport} from '../../model/weekly-report.model';
 
-export interface WeeklyReport {
-  sleep: number;
-  avgStressLevel: number;
-  avgWorkingHours: number;
-  riskLevel: number; // 0-1
-  recommendations: { title: string; text: string; riskLevel: string }[];
-}
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +12,9 @@ export class WeeklyReportService {
 
   constructor(private http: HttpClient) {}
 
-  getWeeklyReport(userId: number): Observable<WeeklyReport> {
-    return this.http.get<WeeklyReport>(`${this.apiUrl}/${userId}`);
+  getWeeklyReport(employeeId: number, start: Date, end: Date): Observable<WeeklyReport> {
+    const params = `?startDate=${start.toISOString().split('T')[0]}&endDate=${end.toISOString().split('T')[0]}`;
+    return this.http.get<WeeklyReport>(`${this.apiUrl}/weekly/${employeeId}${params}`);
   }
 
 }

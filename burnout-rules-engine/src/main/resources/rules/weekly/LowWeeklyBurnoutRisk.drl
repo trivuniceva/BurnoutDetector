@@ -1,0 +1,17 @@
+package rules.weekly;
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+
+rule "Low Weekly Burnout Risk"
+when
+    $f: WeeklyRecordFact(avgWorkingHours <= 8, avgStressLevel < 6, avgSleepHours >= 6)
+then
+    if (riskResult.getRiskLevel() == null) {
+        riskResult.setRiskLevel("Nizak");
+        riskResult.setRecommendation("Zaposleni pokazuje dobar balans između posla i odmora.");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("✅ Aktivirano pravilo: Low Weekly Burnout Risk");
+    }
+end

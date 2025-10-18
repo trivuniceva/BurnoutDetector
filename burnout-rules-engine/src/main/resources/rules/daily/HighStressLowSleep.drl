@@ -1,0 +1,15 @@
+package rules.daily;
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.DailyRecordFact;
+
+rule "High Stress and Low Sleep"
+when
+    $fact: DailyRecordFact(stressLevel >= 8, sleepHours < 5)
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("Kritičan nivo. Odmah zatražite slobodan dan i konsultujte se sa menadžerom.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🔥 Aktivirano pravilo: High Stress and Low Sleep");
+end

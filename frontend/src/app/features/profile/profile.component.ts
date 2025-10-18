@@ -12,6 +12,7 @@ import {RecommendationCardComponent} from '../employee/history/recommendation-ca
 import {HistoryPageComponent} from '../employee/history/history-page/history-page.component';
 import {WeeklyReportService} from '../../core/service/weekly-report/weekly-report.service';
 import {BurnoutRisk} from '../../core/model/burnout-risk.model';
+import { startOfWeek, endOfWeek } from 'date-fns';
 
 @Component({
   selector: 'app-profile',
@@ -91,6 +92,9 @@ export class ProfileComponent implements OnInit{
       this.user = user;
     }
 
+    if(user.id){
+      this.loadWeeklyStats();
+    }
     // if(user.id){
     //   this.weeklyReport.getWeeklyReport(user.id).subscribe({
     //     next: (report) => {
@@ -109,14 +113,12 @@ export class ProfileComponent implements OnInit{
     //     }
     //   });
     // }
-
   }
 
   onTabChange(tab: string) {
     this.activeTab = tab;
     this.hideSidebar = tab === 'View History' || tab === 'Recommendations';
   }
-
 
   openEditPopup() {
     this.showEditPopup = true;
@@ -160,4 +162,41 @@ export class ProfileComponent implements OnInit{
     }
   }
 
+  loadWeeklyStats() {
+    const user = this.authService.getUser();
+    if (!user?.id) return;
+
+    const today = new Date();
+    const weekStart = startOfWeek(today, {weekStartsOn: 1}); // ponedeljak
+    const weekEnd = endOfWeek(today, {weekStartsOn: 1}); // nedelja
+
+    this.weeklyReport.getWeeklyReport(user.id, weekStart, weekEnd).subscribe({
+      next: (report) => {
+
+        const riskMap: { [key: string]: number } = {
+          'Nizak': 0.2,
+          'Srednji': 0.5,
+          'Visok': 0.85
+        };
+
+        const sleepRisk = (report.avgSleepHours ?? 0) / 10; // Sleep 0-10 skala
+        const stressRisk = (report.avgStressLevel ?? 0) / 10; // Stress 0-10
+        const workHoursRisk = (report.avgWorkingHours ?? 12) / 12; // radne sate recimo 0-12h
+        const burnoutRiskValue = riskMap[report.riskLevel] ?? 0;
+
+        console.log(report)
+
+        this.statCards = [
+          { label: 'Sleep', value: report.avgSleepHours?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgSleepHours ?? 8) / 10 },
+          { label: 'Stress', value: report.avgStressLevel?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgStressLevel ?? 0) / 10 },
+          { label: 'Working hours', value: report.avgWorkingHours?.toFixed(1) ?? '0.0', period: 'per week', risk: (report.avgWorkingHours ?? 0) / 12 },
+          { label: 'Burnout risk', value: report.riskLevel ?? 'N/A', period: 'per week', risk: burnoutRiskValue },
+        ];
+
+      },
+      error: (err) => {
+        console.error('Greška pri učitavanju nedeljnih izveštaja', err);
+      }
+    });
+  }
 }
