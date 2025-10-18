@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InputComponent } from '../../../../shared/ui/input/input.component';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
-import { User } from '../../../../shared/user.model';
+import { User } from '../../../../core/model/user.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {ProfileService} from '../../services/profile.service';
+import {ProfileService} from '../../../../core/service/profile/profile.service';
 
 @Component({
   selector: 'app-edit-profile',

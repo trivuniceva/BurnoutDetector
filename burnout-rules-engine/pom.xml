@@ -62,7 +62,6 @@
             <version>8.30.0.Final</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-mvel</artifactId>
@@ -70,17 +69,27 @@
         </dependency>
 
         <dependency>
-            <groupId>backend</groupId>
-            <artifactId>healthDataModule</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-xml-support</artifactId>
+            <version>8.30.0.Final</version>
         </dependency>
+
+
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version> </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>

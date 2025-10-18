@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import {SearchBarComponent} from '../../../../shared/ui/search-bar/search-bar.component';
 import {TwoColumnLayoutComponent} from '../../../../shared/ui/two-column-layout/two-column-layout.component';
-import {Team} from '../../teams.model';
+import {Team} from '../../../../core/model/teams.model';
 import {EntityHeaderComponent} from '../../../../shared/ui/entity-header/entity-header.component';
 import {CommonModule} from '@angular/common';
 import {TeamMemberCardComponent} from '../../components/team-member-card/team-member-card.component';
 import {EmployeeDetailsComponent} from '../../components/employee-details/employee-details.component';
-import {User} from '../../../../shared/user.model';
+import {User} from '../../../../core/model/user.model';
 
 @Component({
   selector: 'app-teams',

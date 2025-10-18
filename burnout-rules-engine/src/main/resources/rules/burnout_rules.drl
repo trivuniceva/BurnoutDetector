@@ -1,0 +1,38 @@
+package rules
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.DailyRecordFact
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
+
+rule "High Stress and Low Sleep"
+    when
+        $fact: DailyRecordFact(stressLevel >= 8, sleepHours < 5)
+    then
+        riskResult.setRiskLevel("Visok");
+        riskResult.setRecommendation("Kritičan nivo. Odmah zatražite slobodan dan i konsultujte se sa menadžerom.");
+        riskResult.setManagerNotificationNeeded(true);
+end
+
+rule "Medium Risk"
+    when
+        $fact: DailyRecordFact(stressLevel > 5, workingHours > 10)
+    then
+        if (riskResult.getRiskLevel() == null) {
+            riskResult.setRiskLevel("Srednji");
+            riskResult.setRecommendation("Preporučujemo kraću pauzu i smanjenje prekovremenog rada u naredna 3 dana.");
+            riskResult.setManagerNotificationNeeded(false);
+        }
+end
+
+rule "Low Risk Default"
+    salience -10
+    when
+        $fact: DailyRecordFact()
+    then
+        if (riskResult.getRiskLevel() == null) {
+            riskResult.setRiskLevel("Nizak");
+            riskResult.setRecommendation("Vaši parametri su stabilni. Nastavite sa zdravim navikama!");
+            riskResult.setManagerNotificationNeeded(false);
+        }
+end

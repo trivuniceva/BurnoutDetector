@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
-import { HistoryService, DailyRecordDto } from '../../history.service';
+import { HistoryService, DailyRecordDto } from '../../../../core/service/history/history.service';
 
 export interface DailyRecord {
   id: number;

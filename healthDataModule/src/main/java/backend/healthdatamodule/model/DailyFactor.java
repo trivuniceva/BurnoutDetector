@@ -17,7 +17,7 @@ public class DailyFactor {
     @JoinColumn(name = "daily_record_id")
     private DailyRecord dailyRecord;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "factor_type_id", nullable = false)
     private FactorType factorType;
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {BurnoutRisk} from '../../model/burnout-risk.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class DailyDataService {
 
   constructor(private http: HttpClient) { }
 
-  processDailyReport(dailyReportData: { date: string; dailyFactors: { name: string; value: any }[]; employeeId: number }): Observable<any> {
+  processDailyReport(dailyReportData: { date: string; dailyFactors: { name: string; value: any }[]; employeeId: number }): Observable<BurnoutRisk> {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -18,7 +19,7 @@ export class DailyDataService {
       })
     };
 
-    return this.http.post<any>(this.apiUrl, dailyReportData, httpOptions);
+    return this.http.post<BurnoutRisk>(this.apiUrl, dailyReportData, httpOptions);
   }
 
   getDailyReport(employeeId: number, date: string): Observable<any> {

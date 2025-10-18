@@ -5,12 +5,13 @@ import {StatCardComponent} from '../../shared/ui/stat-card/stat-card.component';
 import {DailyReportFormComponent} from './components/daily-report-form/daily-report-form.component';
 import {EditProfileComponent} from './components/edit-profile/edit-profile.component';
 import {EntityHeaderComponent} from '../../shared/ui/entity-header/entity-header.component';
-import {User} from '../../shared/user.model';
-import {AuthService} from '../../core/auth/auth.service';
-import {ProfileService} from './services/profile.service';
+import {User} from '../../core/model/user.model';
+import {AuthService} from '../../core/service/auth/auth.service';
+import {ProfileService} from '../../core/service/profile/profile.service';
 import {RecommendationCardComponent} from '../employee/history/recommendation-card/recommendation-card.component';
 import {HistoryPageComponent} from '../employee/history/history-page/history-page.component';
-import {WeeklyReportService} from './services/weekly-report.service';
+import {WeeklyReportService} from '../../core/service/weekly-report/weekly-report.service';
+import {BurnoutRisk} from '../../core/model/burnout-risk.model';
 
 @Component({
   selector: 'app-profile',
@@ -90,24 +91,24 @@ export class ProfileComponent implements OnInit{
       this.user = user;
     }
 
-    if(user.id){
-      this.weeklyReport.getWeeklyReport(user.id).subscribe({
-        next: (report) => {
-          this.statCards = [
-            { label: 'Sleep:', value: report.sleep?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
-            { label: 'Stress:', value: report.avgStressLevel?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
-            { label: 'Working hours:', value: report.avgWorkingHours?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
-            { label: 'Burnout risk:', value: (report.riskLevel ? report.riskLevel*10 : 0).toFixed(1), period: 'per week', risk: report.riskLevel ?? 0 },
-          ];
-
-          this.recommendations = report.recommendations;
-          console.log(this.statCards);
-        },
-        error: (err) => {
-          console.error('Greška pri učitavanju izveštaja', err);
-        }
-      });
-    }
+    // if(user.id){
+    //   this.weeklyReport.getWeeklyReport(user.id).subscribe({
+    //     next: (report) => {
+    //       this.statCards = [
+    //         { label: 'Sleep:', value: report.sleep?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
+    //         { label: 'Stress:', value: report.avgStressLevel?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
+    //         { label: 'Working hours:', value: report.avgWorkingHours?.toFixed(1) ?? '0.0', period: 'per week', risk: report.riskLevel ?? 0 },
+    //         { label: 'Burnout risk:', value: (report.riskLevel ? report.riskLevel*10 : 0).toFixed(1), period: 'per week', risk: report.riskLevel ?? 0 },
+    //       ];
+    //
+    //       this.recommendations = report.recommendations;
+    //       console.log(this.statCards);
+    //     },
+    //     error: (err) => {
+    //       console.error('Greška pri učitavanju izveštaja', err);
+    //     }
+    //   });
+    // }
 
   }
 
@@ -125,8 +126,38 @@ export class ProfileComponent implements OnInit{
     this.showEditPopup = false;
   }
 
-  onDailyReportSubmit(data: any) {
-    console.log('Daily report submitted:', data);
+  onDailyReportSubmit(riskData: BurnoutRisk) {
+    console.log('Daily report submitted. Received risk data:', riskData);
+
+    this.recommendations = [
+      {
+        title: `NOVI RIZIK: ${riskData.riskLevel}`,
+        text: riskData.recommendation,
+        riskLevel: riskData.riskLevel.toLowerCase()
+      },
+      ...this.recommendations.slice(0, 5)
+    ];
+
+    const riskMap: { [key: string]: number } = {
+      'Nizak': 0.2,
+      'Srednji': 0.5,
+      'Visok': 0.85
+    };
+
+    const newRiskValue = riskMap[riskData.riskLevel] || 0;
+
+    const burnoutCardIndex = this.statCards.findIndex(c => c.label.includes('Burnout risk'));
+    if (burnoutCardIndex !== -1) {
+      this.statCards[burnoutCardIndex] = {
+        ...this.statCards[burnoutCardIndex],
+        value: (newRiskValue * 10).toFixed(1),
+        risk: newRiskValue
+      };
+    }
+
+    if (newRiskValue >= 0.7) {
+      this.onTabChange('Recommendations');
+    }
   }
 
 }

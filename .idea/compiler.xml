@@ -17,9 +17,25 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="notificationsModule" />
-        <module name="healthDataModule" />
         <module name="user-management" />
         <module name="reportsModule" />
+      </profile>
+      <profile name="Annotation profile for healthDataModule" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="healthDataModule" />
+      </profile>
+      <profile name="Annotation profile for burnout-rules-engine" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+        </processorPath>
         <module name="burnout-rules-engine" />
       </profile>
     </annotationProcessing>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../../../shared/user.model';
+import { User } from '../../model/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
