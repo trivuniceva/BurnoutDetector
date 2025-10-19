@@ -1,9 +1,9 @@
-package rules.manager
+package rules.manager;
 
-import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
-import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
 
-global java.util.Map riskStats
+global java.util.Map riskStats;
 
 // Query: broj i procenat zaposlenih po nivou rizika
 query "EmployeeRiskDistribution"

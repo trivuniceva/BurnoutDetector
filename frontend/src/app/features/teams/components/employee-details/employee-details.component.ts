@@ -68,4 +68,6 @@ export class EmployeeDetailsComponent {
     return this.member.weeklyReport.avgWorkingHours.toFixed(1);
   }
 
+
+
 }

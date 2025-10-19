@@ -1,8 +1,10 @@
-package rules.manager
+package rules.manager;
 
-import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
 
-global java.util.Map symptomStats
+global java.util.Map symptomStats;
+global BurnoutRisk riskResult;
 
 rule "MAN_Q_Burnout_Symptom_Combinations"
 when

@@ -18,10 +18,17 @@ export class StatCardComponent {
 
   get riskColor(): string {
     let adjustedRisk = this.risk;
+    const label = this.label.toLowerCase();
 
-    if (this.label.toLowerCase().includes('sleep')) {
+    if (label.includes('burnout risk')) {
+      if (adjustedRisk <= 0.3) return 'green';     // Low/Nizak (0.2)
+      else if (adjustedRisk <= 0.6) return 'orange'; // Medium/Srednji (0.5)
+      else return 'red';                          // High/Visok (0.85)
+    }
+
+    if (label.includes('sleep')) {
       adjustedRisk = 1 - this.risk; // manje sati → veći rizik
-    } else if (this.label.toLowerCase().includes('working hours')) {
+    } else if (label.includes('working hours')) {
       if (this.risk <= 0.66) adjustedRisk = 0.2;
       else if (this.risk <= 0.9) adjustedRisk = 0.5;
       else adjustedRisk = 0.85;
@@ -34,15 +41,21 @@ export class StatCardComponent {
 
   getCircleGradient(riskValue: number): string {
     let adjustedRisk = riskValue;
-    if (this.label.toLowerCase().includes('sleep')) {
+    const label = this.label.toLowerCase();
+
+    if (label.includes('burnout risk')) {
+      adjustedRisk = riskValue;
+    }
+    else if (label.includes('sleep')) {
       adjustedRisk = 1 - riskValue;
-    } else if (this.label.toLowerCase().includes('working hours')) {
+    } else if (label.includes('working hours')) {
       if (riskValue <= 0.66) adjustedRisk = 0.2;
       else if (riskValue <= 0.9) adjustedRisk = 0.5;
       else adjustedRisk = 0.85;
     }
 
     const color = this.getRiskColor(adjustedRisk);
+
     const progressPercentage = (1 - adjustedRisk) * 100;
     const endAngle = progressPercentage * 3.6;
 

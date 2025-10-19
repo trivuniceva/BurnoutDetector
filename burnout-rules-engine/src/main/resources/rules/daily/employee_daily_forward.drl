@@ -1,9 +1,10 @@
 package rules.daily;
 
-global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
-
 import burnoutrulesengine.burnoutrulesengine.model.DailyRecordFact;
 import burnoutrulesengine.burnoutrulesengine.model.ChainFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+
+global BurnoutRisk riskResult;
 
 rule "DRL_E_Daily_High_Risk"
 when
@@ -13,6 +14,7 @@ then
     riskResult.setRecommendation("Kritičan nivo. Odmah zatražite slobodan dan i preporučeno je odsustvo (5-10 dana).");
     riskResult.setManagerNotificationNeeded(true);
     System.out.println("🔥 Aktivirano: DRL_E_Daily_High_Risk");
+    riskResult.getActivatedRules().add("DRL_E_Daily_High_Risk");
 end
 
 rule "DRL_E_Daily_Medium_Risk_Overwork"
@@ -24,6 +26,7 @@ then
         riskResult.setRecommendation("Preporučujemo kraću pauzu i smanjenje prekovremenog rada u naredna 3 dana. Predlog: kratko odsustvo (1-2 dana).");
         riskResult.setManagerNotificationNeeded(false);
         System.out.println("⚠️ Aktivirano: DRL_E_Daily_Medium_Risk_Overwork");
+        riskResult.getActivatedRules().add("DRL_E_Daily_Medium_Risk_Overwork");
     }
 end
 
@@ -37,6 +40,7 @@ then
         riskResult.setRecommendation("Vaši parametri su stabilni. Nastavite sa zdravim navikama! Predlog: mikro-pauza.");
         riskResult.setManagerNotificationNeeded(false);
         System.out.println("✅ Aktivirano: DRL_E_Daily_Low_Risk_Default");
+        riskResult.getActivatedRules().add("DRL_E_Daily_Low_Risk_Default");
     }
 end
 
@@ -87,9 +91,9 @@ rule "Chain_R1_High_Risk_Action"
 when
     ChainFact(name == "p")
 then
-    // Nadjacava sve nize rizike
     riskResult.setRiskLevel("Visok");
     riskResult.setRecommendation("KRITIČAN BURNOUT RIZIK! (Lančano zaključivanje). Preporuka odmora i obaveštenje menadžeru.");
     riskResult.setManagerNotificationNeeded(true);
     System.out.println("🔥 Aktivirano: Chain_R1_High_Risk_Action (Lančano)");
+    riskResult.getActivatedRules().add("Chain_R1_High_Risk_Action");
 end

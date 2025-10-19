@@ -46,7 +46,7 @@ public class ManagerRulesService {
         session.dispose();
 
         EmployeeRuleResult result = new EmployeeRuleResult();
-        result.setEmployeeId(risk.getEmployeeId());
+//        result.setEmployeeId(risk.getEmployeeId());
         result.setRiskLevel(risk.getRiskLevel());
         result.setRecommendation(risk.getRecommendation());
         result.setActivatedRules(activatedRules);

@@ -1,9 +1,9 @@
-package rules.manager
+package rules.manager;
 
-import burnoutrulesengine.burnoutrulesengine.model.ChainFact
-import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
+import burnoutrulesengine.burnoutrulesengine.model.ChainFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
 
-global BurnoutRisk riskResult
+global BurnoutRisk riskResult;
 
 // Forward chaining akcije – q -> konkretne preporuke
 rule "MAN_CHAIN_Q_InterventionRecommendations"
@@ -15,4 +15,5 @@ then
     );
     riskResult.setManagerNotificationNeeded(true);
     System.out.println("💡 Aktivirano: MAN_CHAIN_Q_InterventionRecommendations");
+    riskResult.getActivatedRules().add("MAN_CHAIN_Q_InterventionRecommendations");
 end

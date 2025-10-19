@@ -36,5 +36,21 @@
       <span class="risk-text">{{ level }}</span>
     </div>
 
+
+    <div class="recommendation-section" *ngIf="member.weeklyReport?.recommendation as recommendationText">
+      <h4 class="recommendation-title">Recommendation:</h4>
+      <p class="recommendation-text">{{ recommendationText }}</p>
+    </div>
+
+    <div class="rules-section" *ngIf="member.weeklyReport?.activatedRules?.length">
+      <h4 class="rules-title">Activated Rules:</h4>
+      <ul class="rules-list">
+        <li *ngFor="let rule of member.weeklyReport?.activatedRules" class="rule-item">
+          {{ rule }}
+        </li>
+      </ul>
+    </div>
+
+
   </div>
 </div>

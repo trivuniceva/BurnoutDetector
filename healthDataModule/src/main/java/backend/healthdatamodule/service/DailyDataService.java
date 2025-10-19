@@ -142,7 +142,6 @@ public class DailyDataService {
             dto.setEmployeeId(employeeId);
             dto.setDate(record.getDate());
 
-            // KRITIČNA LINIJA: Koristimo Collectors.toList()
             dto.setDailyFactors(
                     record.getDailyFactors().stream()
                             .map(f -> new FactorDto(f.getFactorType().getName(), f.getValue()))

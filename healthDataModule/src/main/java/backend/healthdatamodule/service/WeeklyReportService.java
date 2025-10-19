@@ -95,6 +95,8 @@ public class WeeklyReportService {
         report.setRecommendation(finalRisk.getRecommendation());
         report.setManagerNotificationNeeded(finalRisk.isManagerNotificationNeeded());
 
+        report.setActivatedRules(finalRisk.getActivatedRules());
+
         return report;
     }
 
@@ -130,7 +132,6 @@ public class WeeklyReportService {
 
 
     private int checkOvertimeStreak(Long employeeId) {
-        // samo primer logike
         return 2; // npr. ako su 2 uzastopne nedelje imali >10h prekovremenog
     }
 
@@ -172,15 +173,13 @@ public class WeeklyReportService {
         }
     }
 
-    private int calculateSymptomsCount(Long employeeId, LocalDate weekStart, LocalDate weekEnd) {
+    private double calculateSymptomsCount(Long employeeId, LocalDate weekStart, LocalDate weekEnd) {
         List<DailyRecord> records = dailyRecordRepository
                 .findByEmployeeIdAndDateBetween(employeeId, weekStart, weekEnd);
 
-        long symptomsReportedDays = records.stream()
-                .filter(r -> getFactorValue(r, "physicalSymptoms") > 0)
-                .count();
-
-        return (int) symptomsReportedDays;
+        return records.stream()
+                .mapToDouble(r -> getFactorValue(r, "physicalSymptoms"))
+                .sum();
     }
 
 

@@ -1,10 +1,10 @@
-package rules.manager
+package rules.manager;
 
-import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact
-import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
-import burnoutrulesengine.burnoutrulesengine.model.ChainFact
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+import burnoutrulesengine.burnoutrulesengine.model.ChainFact;
 
-global BurnoutRisk riskResult
+global BurnoutRisk riskResult;
 
 // Forward chaining + CEP – p -> q, ponavljanje visokog rizika
 rule "MAN_CHAIN_P_HighRiskDetected"
@@ -23,6 +23,7 @@ then
     riskResult.setRecommendation("⚠️ Višenedeljni visok rizik. Sistem obaveštava menadžera!");
     insert(new ChainFact("q"));
     System.out.println("🚨 Aktivirano: MAN_CHAIN_Q_TriggerAlert");
+    riskResult.getActivatedRules().add("MAN_CHAIN_Q_TriggerAlert");
 end
 
 // CEP – ako se "p" pojavi 2x u 4 nedelje
@@ -37,4 +38,18 @@ then
     riskResult.setRecommendation("⚠️ Zaposleni ponavlja visok rizik više puta u mesec dana. Potrebna hitna intervencija!");
     riskResult.setManagerNotificationNeeded(true);
     System.out.println("🚨 Aktivirano: MAN_CEP_RepeatedHighRisk");
+    riskResult.getActivatedRules().add("MAN_CEP_RepeatedHighRisk");
+end
+
+// Forward chaining akcije – q -> konkretne preporuke
+rule "MAN_CHAIN_Q_InterventionRecommendations"
+when
+    ChainFact(name == "q")
+then
+    riskResult.setRecommendation(
+        "Preporučene intervencije: odmor 5–10 dana, smanjenje obima zadataka, fleksibilno radno vreme."
+    );
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("💡 Aktivirano: MAN_CHAIN_Q_InterventionRecommendations");
+    riskResult.getActivatedRules().add("MAN_CHAIN_Q_InterventionRecommendations");
 end
