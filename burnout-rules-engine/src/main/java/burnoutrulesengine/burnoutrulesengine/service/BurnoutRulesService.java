@@ -8,6 +8,8 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BurnoutRulesService {
 
@@ -44,6 +46,26 @@ public class BurnoutRulesService {
         BurnoutRisk riskResult = new BurnoutRisk();
         kieSession.setGlobal("riskResult", riskResult);
         kieSession.insert(weeklyFact);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        return riskResult;
+    }
+
+    public BurnoutRisk evaluateTrendRisk(List<WeeklyRecordFact> weeklyFacts) {
+        KieSession kieSession = kieContainer.newKieSession("ksession-trend-rules");
+
+        BurnoutRisk riskResult = new BurnoutRisk();
+        kieSession.setGlobal("riskResult", riskResult);
+
+        if (kieSession == null) {
+            throw new IllegalStateException("KieSession 'ksession-trend-rules' nije pronađena! Proverite kmodule.xml.");
+        }
+
+        for (WeeklyRecordFact fact : weeklyFacts) {
+            kieSession.insert(fact);
+        }
+
         kieSession.fireAllRules();
         kieSession.dispose();
 

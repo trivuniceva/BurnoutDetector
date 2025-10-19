@@ -1,9 +1,7 @@
 package backend.healthdatamodule.service;
 
-import backend.healthdatamodule.dto.BurnoutInput;
 import backend.healthdatamodule.dto.DailyReportDto;
 import backend.healthdatamodule.dto.FactorDto;
-import backend.healthdatamodule.facts.WeeklyReport;
 import backend.healthdatamodule.model.DailyFactor;
 import backend.healthdatamodule.model.DailyRecord;
 import backend.healthdatamodule.model.FactorType;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;

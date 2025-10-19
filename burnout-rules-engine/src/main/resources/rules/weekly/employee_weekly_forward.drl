@@ -1,0 +1,43 @@
+package rules.weekly;
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+
+rule "DRL_E_Weekly_High_Risk_Symptoms"
+when
+    // Visok rizik: Ako je broj simptoma >= 3
+    $f: WeeklyRecordFact(symptomsCount >= 3)
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("Zaposleni ima ≥3 prijavljena simptoma. Predlaže se odsustvo (5-10 dana) i razgovor sa menadžerom.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🔥 Aktivirano: DRL_E_Weekly_High_Risk_Symptoms");
+end
+
+rule "DRL_E_Weekly_Medium_Risk_Sleep_Stress"
+when
+    // Srednji rizik: San 6h ili manje tokom 7 dana (avgSleepHours < 6)
+    $f: WeeklyRecordFact(avgSleepHours < 6)
+then
+    if (riskResult.getRiskLevel() == null || riskResult.getRiskLevel().equals("Nizak")) {
+        riskResult.setRiskLevel("Srednji");
+        riskResult.setRecommendation("Preporučuje se fokus na poboljšanje kvaliteta sna. Predlog: kratko odsustvo (1-2 dana).");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("⚠️ Aktivirano: DRL_E_Weekly_Medium_Risk_Sleep_Stress");
+    }
+end
+
+rule "DRL_E_Weekly_Low_Risk"
+salience -10
+when
+    // Nizak rizik: Standardni parametri
+    $f: WeeklyRecordFact(avgWorkingHours <= 40, avgStressLevel <= 5)
+then
+    if (riskResult.getRiskLevel() == null) {
+        riskResult.setRiskLevel("Nizak");
+        riskResult.setRecommendation("Zaposleni pokazuje dobar balans. Predlog: mikro-pauza.");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("✅ Aktivirano: DRL_E_Weekly_Low_Risk");
+    }
+end

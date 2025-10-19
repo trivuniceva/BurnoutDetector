@@ -1,0 +1,34 @@
+package rules.cep;
+
+global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+
+rule "CEP_E_Repeated_Fatigue_Pattern_Monthly"
+when
+    $count: Number(intValue >= 3)
+    from accumulate(
+        WeeklyRecordFact(symptomsCount > 0),
+        count()
+    )
+then
+    riskResult.setRiskLevel("Srednji");
+    riskResult.setRecommendation("Detektovan ponavljajući obrazac umora i pada koncentracije (symptomsCount). Sistem aktivira obrazac burnout-a.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("⚠️ Aktivirano: CEP_E_Repeated_Fatigue_Pattern_Monthly");
+end
+
+rule "CEP_E_Zero_Vacation_High_Stress_Trend"
+when
+    $countZeroDays: Number(intValue >= 4)
+    from accumulate(
+        WeeklyRecordFact(sickDays == 0),
+        count()
+    )
+    WeeklyRecordFact(avgStressLevel >= 7)
+
+then
+    riskResult.setRecommendation("Sistem izdaje upozorenje HR-u: Zaposleni bez odmora 30 dana uz rastući trend stresa.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("⚠️ Aktivirano: CEP_E_Zero_Vacation_High_Stress_Trend");
+end

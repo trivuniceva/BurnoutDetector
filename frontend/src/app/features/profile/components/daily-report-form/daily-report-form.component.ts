@@ -46,7 +46,10 @@ export class DailyReportFormComponent implements OnInit, OnDestroy{
   ];
 
 
-  constructor(private fb: FormBuilder, private dailyDataService: DailyDataService) { }
+  constructor(
+    private fb: FormBuilder,
+    private dailyDataService: DailyDataService
+  ) { }
 
   ngOnInit(): void {
 
