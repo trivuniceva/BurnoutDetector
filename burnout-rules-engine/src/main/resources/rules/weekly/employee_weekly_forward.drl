@@ -1,8 +1,9 @@
 package rules.weekly;
 
-global burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk riskResult;
-
 import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+
+global BurnoutRisk riskResult;
 
 rule "DRL_E_Weekly_High_Risk_Symptoms"
 when

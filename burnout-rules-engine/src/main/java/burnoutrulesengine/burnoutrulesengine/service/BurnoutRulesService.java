@@ -24,7 +24,7 @@ public class BurnoutRulesService {
         KieSession kieSession = kieContainer.newKieSession("ksession-daily-rules");
 
         if (kieSession == null) {
-            throw new IllegalStateException("KieSession 'ksession-rules' nije pronađena!");
+            throw new IllegalStateException("KieSession 'ksession-daily-rules' nije pronađena! Proverite kmodule.xml.");
         }
 
         BurnoutRisk riskResult = new BurnoutRisk();
@@ -37,7 +37,8 @@ public class BurnoutRulesService {
     }
 
     public BurnoutRisk evaluateWeeklyRisk(WeeklyRecordFact weeklyFact) {
-        KieSession kieSession = kieContainer.newKieSession("ksession-weekly-rules");
+        var kieBase = kieContainer.getKieBase("weeklyRulesKBase");
+        KieSession kieSession = kieBase.newKieSession();
 
         if (kieSession == null) {
             throw new IllegalStateException("KieSession 'ksession-weekly-rules' nije pronađena!");
