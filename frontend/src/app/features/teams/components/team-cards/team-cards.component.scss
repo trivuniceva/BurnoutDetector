@@ -4,20 +4,18 @@
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: #fff;
   display: flex;
   flex-direction: column;
 
-&:hover {
-   transform: translateY(-5px);
-   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
- }
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .team-image-container {
   width: 100%;
-// Visina 1:1.2 za izduženi portretni format
-padding-top: 120%;
+  padding-top: 120%;
   position: relative;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
@@ -29,24 +27,28 @@ padding-top: 120%;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; // Osigurava da se slika popuni prostor
+  object-fit: cover;
 }
 
 .team-info {
   padding: 1rem;
   text-align: left;
-  background-color: #f7f7f7;
-border-radius: 0 0 12px 12px;
+  //background-color: #f7f7f7;
+  border-radius: 0 0 12px 12px;
+
+  background-color: rgba(30,30,30, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .team-name {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #333;
+  color: white;
   margin-bottom: 0.25rem;
 }
 
 .project-name {
   font-size: 0.9rem;
-  color: #666;
+  color: white;
 }
+

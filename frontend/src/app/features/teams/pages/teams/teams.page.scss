@@ -1,9 +1,36 @@
+:host {
+  display: block;
+  padding: 4rem;
+}
+
+.two-column-container {
+  //display: flex;
+  //gap: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 0px 12px #999999;
+  background: #fff;
+  padding: 36px;
+}
+
 .teams-grid-container {
+
   display: grid;
-  // Prilagodljiva mreža: najmanje 250px, najviše 1fr
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 56px;
   padding: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .teams-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .teams-grid-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 .sidebar-content {

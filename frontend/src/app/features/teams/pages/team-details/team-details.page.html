@@ -5,11 +5,16 @@
         <app-entity-header
           [label]="'Team:'"
           [title]="team?.name ?? 'Nema naziva tima'"
-          [imageUrl]="team?.imageUrl ?? '/pics/default-team.jpg'">
+          [imageUrl]="fullTeamImageUrl"
+        >
         </app-entity-header>
       </div>
-      <app-search-bar></app-search-bar>
-      <div class="team-cards-holder">
+
+      <app-tabs [tabs]="tabs" (tabChange)="onTabChange($event)"></app-tabs>
+
+      <div class="team-cards-holder" *ngIf="activeTab === 'Employee'">
+<!--        <app-search-bar></app-search-bar>-->
+
         <app-team-member-card *ngFor="let member of teamMembers"
                               [member]="member"
                               (memberSelected)="onMemberSelected(member)"
@@ -19,7 +24,7 @@
     </div>
   </div>
 
-  <div sidebar-section>
+  <div sidebar-section *ngIf="activeTab === 'Employee'">
     <div class="sidebar-content">
       <app-employee-details [member]="selectedEmployee" *ngIf="selectedEmployee"></app-employee-details>
     </div>

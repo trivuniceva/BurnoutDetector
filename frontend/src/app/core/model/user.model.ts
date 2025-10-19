@@ -1,6 +1,5 @@
 export type UserRole = 'EMPLOYEE' | 'MANAGER' | 'ADMINISTRATOR'
 
-
 export interface User {
   id: string;
   firstName: string;
@@ -8,6 +7,7 @@ export interface User {
   email: string;
   userRole: UserRole;
   imageUrl?: string;
+  profilePic?: string;
 
   // riskScore: number;
 }

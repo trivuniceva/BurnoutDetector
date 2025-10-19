@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Team } from '../../../../core/model/teams.model';
@@ -8,6 +8,8 @@ import { SearchBarComponent } from '../../../../shared/ui/search-bar/search-bar.
 import { EntityHeaderComponent } from '../../../../shared/ui/entity-header/entity-header.component';
 import { TeamMemberCardComponent } from '../../components/team-member-card/team-member-card.component';
 import { EmployeeDetailsComponent } from '../../components/employee-details/employee-details.component';
+import {TeamsService} from '../../../../core/service/teams/teams.service';
+import {TabsComponent} from '../../../../shared/ui/tabs/tabs.component';
 
 @Component({
   selector: 'app-team-details',
@@ -19,21 +21,54 @@ import { EmployeeDetailsComponent } from '../../components/employee-details/empl
     EntityHeaderComponent,
     TeamMemberCardComponent,
     EmployeeDetailsComponent,
+    TabsComponent
   ],
   templateUrl: './team-details.page.html',
   styleUrl: './team-details.page.scss'
 })
-export class TeamDetailsPage {
-  team: Team | null = null;
+export class TeamDetailsPage implements OnInit{
+  team: any | null = null;
   selectedEmployee: User | null = null;
+  loading: boolean = true;
 
-  constructor(private route: ActivatedRoute) {}
+  activeTab = 'Employee';
+  tabs = ['Employee', 'Statistic', 'Recommendations'];
+  hideSidebar = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private teamsService: TeamsService
+    ) {}
 
   ngOnInit(): void {
     const teamId = this.route.snapshot.paramMap.get('id');
+
     if (teamId) {
-      this.team = this.getTeamById(teamId);
+      this.loadTeamDetails(teamId);
+    } else {
+      console.error('ID tima nije pronađen u ruti.');
+      this.loading = false;
     }
+  }
+
+  onTabChange(tab: string) {
+    this.activeTab = tab;
+    this.hideSidebar = tab === 'Statistic' || tab === 'Recommendations';
+  }
+
+  loadTeamDetails(id: string): void {
+    this.teamsService.getTeamById(id).subscribe({
+      next: (teamData) => {
+        this.team = teamData;
+        this.loading = false;
+        console.log('Detalji tima učitani:', teamData);
+      },
+      error: (error) => {
+        console.error('Greška pri učitavanju detalja tima:', error);
+        this.loading = false;
+        alert('Nije moguće učitati detalje tima.');
+      }
+    });
   }
 
   get teamMembers(): User[] {
@@ -101,4 +136,26 @@ export class TeamDetailsPage {
 
     return teams.find(t => t.id === id) ?? null;
   }
+
+  get fullTeamImageUrl(): string {
+    const baseUrl = 'http://localhost:8080/';
+
+    if (!this.team?.imageUrl) {
+      return '/pics/default-team.jpg';
+    }
+
+    if (this.team.imageUrl.startsWith('http')) {
+      return this.team.imageUrl;
+    }
+
+    const cleanedPath = this.team.imageUrl.startsWith('/')
+      ? this.team.imageUrl.substring(1)
+      : this.team.imageUrl;
+
+    const fullUrl = baseUrl + cleanedPath;
+    console.log('🔗 URL slike tima:', fullUrl);
+    return fullUrl;
+  }
+
+
 }

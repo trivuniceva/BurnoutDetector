@@ -1,7 +1,7 @@
 <div class="employee-container">
   <div class="employee-header">
     <div class="employee-avatar">
-      <img [src]="member.imageUrl" alt="Employee Picture">
+      <img [src]="getFullImageUrl(member.profilePic, 'user')" alt="Member Picture">
     </div>
     <div class="employee-info">
       <h2 class="employee-name">{{ member.firstName }} {{ member.lastName }}</h2>
@@ -12,21 +12,21 @@
   <div class="employee-stats">
     <div class="param-row">
       <div class="param">
-        <span class="param-label">Param:</span>
+        <span class="param-label">Sleep:</span>
         <strong class="param-value">23</strong>
       </div>
       <div class="param">
-        <span class="param-label">Param:</span>
+        <span class="param-label">Stress:</span>
         <strong class="param-value">23</strong>
       </div>
       <div class="param">
-        <span class="param-label">Param:</span>
+        <span class="param-label">Worktime:</span>
         <strong class="param-value">24</strong>
       </div>
     </div>
 
     <div class="risk-section">
-      <span class="risk-label">Risk:</span>
+      <span class="risk-label">Burnout risk:</span>
       <div class="risk-bar-container">
         <div class="risk-bar-fill"
              [ngClass]="getRiskColor(20)"

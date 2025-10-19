@@ -1,1 +1,35 @@
-<p>add-team works!</p>
+<div class="add-team-container">
+  <h2>Dodaj Novi Tim</h2>
+  <form [formGroup]="teamForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="name">Naziv Tima:</label>
+      <input id="name" type="text" formControlName="name">
+      <div *ngIf="controls['name'].invalid && (controls['name'].dirty || controls['name'].touched)" class="error-message">
+        Naziv tima je obavezan.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Opis Tima:</label>
+      <textarea id="description" formControlName="description"></textarea>
+      <div *ngIf="controls['description'].invalid && (controls['description'].dirty || controls['description'].touched)" class="error-message">
+        Opis tima je obavezan.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="imageFile">Slika Tima (JPG/PNG):</label>
+      <input id="imageFile"
+             type="file"
+             (change)="onFileSelected($event)"
+             accept="image/jpeg,image/png"
+             required>
+      <div *ngIf="!selectedFile" class="error-message">
+        Slika tima je obavezna.
+      </div>
+    </div>
+
+    <button type="submit">Dodaj Tim</button>
+  </form>
+</div>
