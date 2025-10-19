@@ -1,0 +1,26 @@
+package rules.manager
+
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact
+
+global java.util.Map riskStats
+
+// Query: broj i procenat zaposlenih po nivou rizika
+query "EmployeeRiskDistribution"
+    $r : BurnoutRisk()
+end
+
+rule "MAN_Q_Team_Risk_Distribution"
+when
+    $risk : BurnoutRisk(riskLevel != null)
+then
+    Integer countLow = (Integer) riskStats.getOrDefault("Nizak", 0);
+    Integer countMed = (Integer) riskStats.getOrDefault("Srednji", 0);
+    Integer countHigh = (Integer) riskStats.getOrDefault("Visok", 0);
+
+    if ($risk.getRiskLevel().equals("Nizak")) riskStats.put("Nizak", countLow + 1);
+    if ($risk.getRiskLevel().equals("Srednji")) riskStats.put("Srednji", countMed + 1);
+    if ($risk.getRiskLevel().equals("Visok")) riskStats.put("Visok", countHigh + 1);
+
+    System.out.println("📊 Ažurirana statistika rizika tima: " + riskStats);
+end

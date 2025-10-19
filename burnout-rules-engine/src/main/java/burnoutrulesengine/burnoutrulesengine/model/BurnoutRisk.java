@@ -12,4 +12,6 @@ public class BurnoutRisk {
     private String riskLevel = "Nizak";
     private String recommendation;
     private boolean managerNotificationNeeded;
+
+    
 }

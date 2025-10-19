@@ -1,0 +1,21 @@
+package rules.manager
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
+
+global BurnoutRisk riskResult
+
+// Accumulate – ako srednji rizik traje ≥3 nedelje
+rule "MAN_ACC_MediumRisk_3Weeks_Upgrade"
+when
+    $count : Number(intValue >= 3)
+    from accumulate(
+        WeeklyRecordFact(avgStressLevel >= 6, avgStressLevel < 8),
+        count()
+    )
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("Zaposleni ima srednji rizik 3+ nedelje zaredom → prelazak u visok rizik.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("⏳ Aktivirano: MAN_ACC_MediumRisk_3Weeks_Upgrade");
+end

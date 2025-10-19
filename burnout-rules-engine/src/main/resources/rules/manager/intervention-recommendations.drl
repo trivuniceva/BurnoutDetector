@@ -1,0 +1,18 @@
+package rules.manager
+
+import burnoutrulesengine.burnoutrulesengine.model.ChainFact
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
+
+global BurnoutRisk riskResult
+
+// Forward chaining akcije – q -> konkretne preporuke
+rule "MAN_CHAIN_Q_InterventionRecommendations"
+when
+    ChainFact(name == "q")
+then
+    riskResult.setRecommendation(
+        "Preporučene intervencije: odmor 5–10 dana, smanjenje obima zadataka, fleksibilno radno vreme."
+    );
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("💡 Aktivirano: MAN_CHAIN_Q_InterventionRecommendations");
+end

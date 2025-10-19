@@ -13,26 +13,28 @@
     <div class="param-row">
       <div class="param">
         <span class="param-label">Sleep:</span>
-        <strong class="param-value">23</strong>
+        <strong class="param-value">{{ getRoundedSleepHours() }} h</strong>
       </div>
       <div class="param">
         <span class="param-label">Stress:</span>
-        <strong class="param-value">23</strong>
+        <strong class="param-value">{{ member.weeklyReport?.avgStressLevel ?? '-' }}</strong>
       </div>
       <div class="param">
         <span class="param-label">Worktime:</span>
-        <strong class="param-value">24</strong>
+        <strong class="param-value">{{ getRoundedWorkHours() }} h</strong>
       </div>
     </div>
 
-    <div class="risk-section">
+    <div class="risk-section" *ngIf="member.weeklyReport?.riskLevel as level">
       <span class="risk-label">Burnout risk:</span>
       <div class="risk-bar-container">
         <div class="risk-bar-fill"
-             [ngClass]="getRiskColor(20)"
-             [style.width]="(20 * 100) + '%'">
+             [ngClass]="getRiskColorFromLevel(level)"
+             [style.width]="getRiskWidthFromLevel(level)">
         </div>
       </div>
+      <span class="risk-text">{{ level }}</span>
     </div>
+
   </div>
 </div>

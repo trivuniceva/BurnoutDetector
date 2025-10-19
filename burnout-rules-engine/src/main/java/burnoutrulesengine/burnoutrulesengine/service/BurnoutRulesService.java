@@ -72,4 +72,6 @@ public class BurnoutRulesService {
 
         return riskResult;
     }
+
+
 }

@@ -39,5 +39,33 @@ export class EmployeeDetailsComponent {
     }
   }
 
+  getRiskColorFromLevel(level: string): string {
+    switch(level) {
+      case 'Nizak': return 'green';
+      case 'Srednji': return 'orange';
+      case 'Visok': return 'red';
+      default: return '';
+    }
+  }
+
+  getRiskWidthFromLevel(level: string): string {
+    switch(level) {
+      case 'Nizak': return '33%';
+      case 'Srednji': return '66%';
+      case 'Visok': return '100%';
+      default: return '0%';
+    }
+  }
+
+
+  getRoundedSleepHours(): string {
+    if (this.member.weeklyReport?.avgSleepHours === undefined) return '-';
+    return this.member.weeklyReport.avgSleepHours.toFixed(1);
+  }
+
+  getRoundedWorkHours(): string {
+    if (this.member.weeklyReport?.avgWorkingHours === undefined) return '-';
+    return this.member.weeklyReport.avgWorkingHours.toFixed(1);
+  }
 
 }

@@ -1,0 +1,24 @@
+package rules.manager
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
+
+global BurnoutRisk riskResult
+
+rule "MAN_ACC_Employee_Trend_Risk"
+when
+    $avgStress : Double() from accumulate(
+        WeeklyRecordFact($s : avgStressLevel),
+        average($s)
+    )
+    $avgHours : Double() from accumulate(
+        WeeklyRecordFact($h : avgWorkingHours),
+        average($h)
+    )
+then
+    if ($avgStress >= 7 || $avgHours > 48) {
+        riskResult.setRiskLevel("Srednji");
+        riskResult.setRecommendation("Trend pokazuje povećan stres i radne sate. Potrebna prevencija (odmor, fleksibilno vreme).");
+    }
+    System.out.println("📈 Aktivirano: MAN_ACC_Employee_Trend_Risk");
+end

@@ -1,0 +1,40 @@
+package rules.manager
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk
+import burnoutrulesengine.burnoutrulesengine.model.ChainFact
+
+global BurnoutRisk riskResult
+
+// Forward chaining + CEP – p -> q, ponavljanje visokog rizika
+rule "MAN_CHAIN_P_HighRiskDetected"
+when
+    $f : WeeklyRecordFact(avgStressLevel >= 8, avgSleepHours < 6)
+then
+    insert(new ChainFact("p")); // detektovan visok rizik
+end
+
+rule "MAN_CHAIN_Q_TriggerAlert"
+when
+    ChainFact(name == "p")
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setManagerNotificationNeeded(true);
+    riskResult.setRecommendation("⚠️ Višenedeljni visok rizik. Sistem obaveštava menadžera!");
+    insert(new ChainFact("q"));
+    System.out.println("🚨 Aktivirano: MAN_CHAIN_Q_TriggerAlert");
+end
+
+// CEP – ako se "p" pojavi 2x u 4 nedelje
+rule "MAN_CEP_RepeatedHighRisk"
+when
+    accumulate(
+        ChainFact(name == "p"),
+        $count : count()
+    )
+    eval($count >= 2)
+then
+    riskResult.setRecommendation("⚠️ Zaposleni ponavlja visok rizik više puta u mesec dana. Potrebna hitna intervencija!");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🚨 Aktivirano: MAN_CEP_RepeatedHighRisk");
+end
