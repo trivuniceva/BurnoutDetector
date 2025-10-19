@@ -15,5 +15,10 @@ public class WeeklyRecordFact {
     private double totalOvertimeHours;
     private double stressIncreaseLast3Weeks;
     private int overtimeIncreaseStreak;
+
+    private int symptomsCount;
+    private boolean hasFatigueAndConcentrationLoss;
+    private int sickDays;
+
 }
 

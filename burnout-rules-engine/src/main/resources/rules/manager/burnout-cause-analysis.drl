@@ -1,0 +1,16 @@
+package rules.manager;
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+
+global java.util.Map symptomStats;
+global BurnoutRisk riskResult;
+
+rule "MAN_Q_Burnout_Symptom_Combinations"
+when
+    $f : WeeklyRecordFact(hasFatigueAndConcentrationLoss == true)
+then
+    Integer count = (Integer) symptomStats.getOrDefault("Umor+Pad koncentracije", 0);
+    symptomStats.put("Umor+Pad koncentracije", count + 1);
+    System.out.println("🧠 Evidentirana kombinacija simptoma: Umor+Pad koncentracije");
+end

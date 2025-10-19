@@ -1,1 +1,47 @@
-<p>team-details.page works!</p>
+<app-two-column-layout>
+  <div content-section>
+    <div class="teams-main-content">
+      <div class="team-header-container">
+        <app-entity-header
+          [label]="'Team:'"
+          [title]="team?.name ?? 'Nema naziva tima'"
+          [imageUrl]="fullTeamImageUrl"
+        >
+        </app-entity-header>
+      </div>
+
+      <app-tabs [tabs]="tabs" (tabChange)="onTabChange($event)"></app-tabs>
+
+      <div *ngIf="activeTab === 'Statistic'" class="team-statistics-container">
+        <h3>Team Risk Overview</h3>
+
+        <div *ngIf="teamRiskStats; else loadingStats">
+          <p>Low risk: {{ teamRiskStats.low || 0 }}</p>
+          <p>Medium risk: {{ teamRiskStats.medium || 0 }}</p>
+          <p>High risk: {{ teamRiskStats.high || 0 }}</p>
+        </div>
+
+        <ng-template #loadingStats>
+          <p>Loading statistics...</p>
+        </ng-template>
+      </div>
+
+
+      <div class="team-cards-holder" *ngIf="activeTab === 'Employee'">
+<!--        <app-search-bar></app-search-bar>-->
+
+        <app-team-member-card *ngFor="let member of teamMembers"
+                              [member]="member"
+                              (memberSelected)="onMemberSelected(member)"
+        >
+        </app-team-member-card>
+      </div>
+    </div>
+  </div>
+
+  <div sidebar-section *ngIf="activeTab === 'Employee'">
+    <div class="sidebar-content">
+      <app-employee-details [member]="selectedEmployee" *ngIf="selectedEmployee"></app-employee-details>
+    </div>
+  </div>
+</app-two-column-layout>

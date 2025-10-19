@@ -28,4 +28,20 @@ export class TeamMemberCardComponent {
       return 'red';
     }
   }
+
+  getFullImageUrl(imageName: string | undefined, type: 'team' | 'user' = 'user'): string {
+    if (!imageName) return '/defaultPic.jpg';
+
+    const baseUrl = 'http://localhost:8080';
+
+    if (type === 'team') {
+      return `${baseUrl}${imageName}`;
+    } else {
+      return `${baseUrl}/uploads/profile_pictures/${imageName}`;
+    }
+  }
+
+
+
+
 }

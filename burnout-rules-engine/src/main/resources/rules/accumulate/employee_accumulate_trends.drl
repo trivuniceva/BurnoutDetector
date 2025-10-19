@@ -1,0 +1,44 @@
+package rules.accumulate;
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+
+global BurnoutRisk riskResult;
+
+rule "ACC_E_High_Average_Working_Hours_4_Weeks"
+when
+    $avgHours: Double(this > 48.0)
+    from accumulate(
+        WeeklyRecordFact($hours: avgWorkingHours),
+        average($hours)
+    )
+then
+    if (riskResult.getRiskLevel() == null || riskResult.getRiskLevel().equals("Nizak") || riskResult.getRiskLevel().equals("Srednji")) {
+        riskResult.setRiskLevel("Srednji");
+        riskResult.setRecommendation("Prosečan radni vek u poslednje 4 nedelje je predug. Rizik se povećava za jedan nivo. Preporučuje se korekcija obaveza.");
+        System.out.println("⚠️ Aktivirano: ACC_E_High_Average_Working_Hours_4_Weeks");
+        riskResult.getActivatedRules().add("ACC_E_High_Average_Working_Hours_4_Weeks");
+    }
+end
+
+rule "ACC_E_Stress_Increase_Trend"
+when
+    $f: WeeklyRecordFact(stressIncreaseLast3Weeks >= 2)
+then
+    if (riskResult.getRiskLevel() == null || riskResult.getRiskLevel().equals("Nizak")) {
+        riskResult.setRiskLevel("Srednji");
+        riskResult.setRecommendation("Detektovan rast stresa od ≥2 poena za 3 nedelje. Rizik se povećava za jedan nivo. Predlog: vežbe, meditacija.");
+        System.out.println("⚠️ Aktivirano: ACC_E_Stress_Increase_Trend");
+        riskResult.getActivatedRules().add("ACC_E_Stress_Increase_Trend");
+    }
+end
+
+rule "ACC_E_Overtime_Increase_Correction"
+when
+    $f: WeeklyRecordFact(overtimeIncreaseStreak >= 3)
+then
+    riskResult.setRecommendation("Sistem predlaže korekciju radnih obaveza zbog rasta prekovremenih sati 3 uzastopne nedelje.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("⚠️ Aktivirano: ACC_E_Overtime_Increase_Correction");
+    riskResult.getActivatedRules().add("ACC_E_Overtime_Increase_Correction");
+end

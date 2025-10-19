@@ -1,7 +1,7 @@
 <div class="employee-container">
   <div class="employee-header">
     <div class="employee-avatar">
-      <img [src]="member.imageUrl" alt="Employee Picture">
+      <img [src]="getFullImageUrl(member.profilePic, 'user')" alt="Member Picture">
     </div>
     <div class="employee-info">
       <h2 class="employee-name">{{ member.firstName }} {{ member.lastName }}</h2>
@@ -12,27 +12,45 @@
   <div class="employee-stats">
     <div class="param-row">
       <div class="param">
-        <span class="param-label">Param:</span>
-        <strong class="param-value">23</strong>
+        <span class="param-label">Sleep:</span>
+        <strong class="param-value">{{ getRoundedSleepHours() }} h</strong>
       </div>
       <div class="param">
-        <span class="param-label">Param:</span>
-        <strong class="param-value">23</strong>
+        <span class="param-label">Stress:</span>
+        <strong class="param-value">{{ member.weeklyReport?.avgStressLevel ?? '-' }}</strong>
       </div>
       <div class="param">
-        <span class="param-label">Param:</span>
-        <strong class="param-value">24</strong>
+        <span class="param-label">Worktime:</span>
+        <strong class="param-value">{{ getRoundedWorkHours() }} h</strong>
       </div>
     </div>
 
-    <div class="risk-section">
-      <span class="risk-label">Risk:</span>
+    <div class="risk-section" *ngIf="member.weeklyReport?.riskLevel as level">
+      <span class="risk-label">Burnout risk:</span>
       <div class="risk-bar-container">
         <div class="risk-bar-fill"
-             [ngClass]="getRiskColor(20)"
-             [style.width]="(20 * 100) + '%'">
+             [ngClass]="getRiskColorFromLevel(level)"
+             [style.width]="getRiskWidthFromLevel(level)">
         </div>
       </div>
+      <span class="risk-text">{{ level }}</span>
     </div>
+
+
+    <div class="recommendation-section" *ngIf="member.weeklyReport?.recommendation as recommendationText">
+      <h4 class="recommendation-title">Recommendation:</h4>
+      <p class="recommendation-text">{{ recommendationText }}</p>
+    </div>
+
+    <div class="rules-section" *ngIf="member.weeklyReport?.activatedRules?.length">
+      <h4 class="rules-title">Activated Rules:</h4>
+      <ul class="rules-list">
+        <li *ngFor="let rule of member.weeklyReport?.activatedRules" class="rule-item">
+          {{ rule }}
+        </li>
+      </ul>
+    </div>
+
+
   </div>
 </div>

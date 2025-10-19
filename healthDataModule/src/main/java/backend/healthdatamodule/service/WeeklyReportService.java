@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WeeklyReportService {
@@ -69,33 +72,33 @@ public class WeeklyReportService {
     }
 
     public WeeklyReport calculateWeeklyReport(Long employeeId, LocalDate startDate, LocalDate endDate) {
-        // 1. Napravi WeeklyRecordFact iz dnevnih zapisa
-        WeeklyRecordFact fact = calculateWeeklyFact(employeeId, startDate, endDate);
-        if (fact == null) {
+
+        WeeklyRecordFact currentWeekFact = calculateWeeklyFact(employeeId, startDate, endDate);
+        if (currentWeekFact == null) {
             throw new IllegalArgumentException("Nema podataka za ovu nedelju!");
         }
 
-        // 2. Pozovi Drools engine da proceni rizik
-        BurnoutRisk risk = burnoutRulesService.evaluateWeeklyRisk(fact);
+        BurnoutRisk weeklyRisk = burnoutRulesService.evaluateWeeklyRisk(currentWeekFact);
 
-        // 3. Napravi WeeklyReport DTO i upiši rezultate
+        List<WeeklyRecordFact> trendFacts = getLastFourWeeklyFacts(employeeId, endDate);
+
+        BurnoutRisk trendRisk = burnoutRulesService.evaluateTrendRisk(trendFacts);
+
+        BurnoutRisk finalRisk = combineRisks(weeklyRisk, trendRisk);
+
+
         WeeklyReport report = new WeeklyReport();
-        report.setEmployeeId(employeeId);
-        report.setWeekStart(startDate);
-        report.setWeekEnd(endDate);
-        report.setAvgWorkingHours(fact.getAvgWorkingHours());
-        report.setAvgStressLevel(fact.getAvgStressLevel());
-        report.setAvgSleepHours(fact.getAvgSleepHours());
-        report.setTotalOvertimeHours(fact.getTotalOvertimeHours());
-        report.setStressIncreaseLast3Weeks(fact.getStressIncreaseLast3Weeks());
-        report.setOvertimeIncreaseStreak(fact.getOvertimeIncreaseStreak());
-        report.setRiskLevel(risk.getRiskLevel());
-        report.setRecommendation(risk.getRecommendation());
-        report.setManagerNotificationNeeded(risk.isManagerNotificationNeeded());
+        report.setAvgWorkingHours(currentWeekFact.getAvgWorkingHours());
+        report.setAvgStressLevel(currentWeekFact.getAvgStressLevel());
+        report.setAvgSleepHours(currentWeekFact.getAvgSleepHours());
+        report.setRiskLevel(finalRisk.getRiskLevel());
+        report.setRecommendation(finalRisk.getRecommendation());
+        report.setManagerNotificationNeeded(finalRisk.isManagerNotificationNeeded());
+
+        report.setActivatedRules(finalRisk.getActivatedRules());
 
         return report;
     }
-
 
     private double getFactorValue(DailyRecord record, String factorName) {
         return record.getDailyFactors().stream()
@@ -129,8 +132,55 @@ public class WeeklyReportService {
 
 
     private int checkOvertimeStreak(Long employeeId) {
-        // samo primer logike
         return 2; // npr. ako su 2 uzastopne nedelje imali >10h prekovremenog
     }
+
+    public List<WeeklyRecordFact> getLastFourWeeklyFacts(Long employeeId, LocalDate currentWeekEnd) {
+        List<WeeklyRecordFact> facts = new ArrayList<>();
+
+        LocalDate endDate = currentWeekEnd;
+        for (int i = 0; i < 4; i++) {
+            LocalDate startDate = endDate.minusDays(6);
+
+            WeeklyRecordFact fact = calculateWeeklyFact(employeeId, startDate, endDate);
+
+            if (fact != null) {
+                facts.add(fact);
+            }
+            endDate = startDate.minusDays(1);
+        }
+
+        Collections.reverse(facts);
+        return facts;
+    }
+
+    private BurnoutRisk combineRisks(BurnoutRisk r1, BurnoutRisk r2) {
+        String r1LevelStr = (r1.getRiskLevel() == null) ? "Nizak" : r1.getRiskLevel();
+        String r2LevelStr = (r2.getRiskLevel() == null) ? "Nizak" : r2.getRiskLevel();
+
+        Map<String, Integer> riskOrder = Map.of("Nizak", 1, "Srednji", 2, "Visok", 3);
+
+        int r1Level = riskOrder.getOrDefault(r1LevelStr, 0);
+        int r2Level = riskOrder.getOrDefault(r2LevelStr, 0);
+
+        if (r2Level > r1Level) {
+            return r2;
+        } else if (r1Level > r2Level) {
+            return r1;
+        } else {
+            r1.setManagerNotificationNeeded(r1.isManagerNotificationNeeded() || r2.isManagerNotificationNeeded());
+            return r1;
+        }
+    }
+
+    private double calculateSymptomsCount(Long employeeId, LocalDate weekStart, LocalDate weekEnd) {
+        List<DailyRecord> records = dailyRecordRepository
+                .findByEmployeeIdAndDateBetween(employeeId, weekStart, weekEnd);
+
+        return records.stream()
+                .mapToDouble(r -> getFactorValue(r, "physicalSymptoms"))
+                .sum();
+    }
+
 
 }

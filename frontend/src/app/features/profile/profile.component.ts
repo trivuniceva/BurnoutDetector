@@ -49,38 +49,38 @@ export class ProfileComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    this.recommendations = [
-      {
-        "title": "Analiza stresa",
-        "text": "Vaš nivo stresa je u porastu poslednje 4 nedelje...",
-        "riskLevel": "high"
-      },
-      {
-        "title": "Upozorenje: San i radni sati",
-        "text": "U tri uzastopna dana zabeležen je pad koncentracije i umor...",
-        "riskLevel": "high"
-      },
-      {
-        "title": "Radna ravnoteža",
-        "text": "Primetan je trend prekovremenog rada u poslednjih mesec dana...",
-        "riskLevel": "medium"
-      },
-      {
-        "title": "Pozitivna povratna informacija",
-        "text": "Vaši izveštaji pokazuju visok nivo angažovanosti...",
-        "riskLevel": "low"
-      },
-      {
-        "title": "Fizički simptomi",
-        "text": "Prijavili ste glavobolje i bol u leđima više puta...",
-        "riskLevel": "medium"
-      },
-      {
-        "title": "Zdravlje i blagostanje",
-        "text": "Prosečan kvalitet sna i nivo stresa su stabilni...",
-        "riskLevel": "low"
-      }
-    ];
+    // this.recommendations = [
+    //   {
+    //     "title": "Analiza stresa",
+    //     "text": "Vaš nivo stresa je u porastu poslednje 4 nedelje...",
+    //     "riskLevel": "high"
+    //   },
+    //   {
+    //     "title": "Upozorenje: San i radni sati",
+    //     "text": "U tri uzastopna dana zabeležen je pad koncentracije i umor...",
+    //     "riskLevel": "high"
+    //   },
+    //   {
+    //     "title": "Radna ravnoteža",
+    //     "text": "Primetan je trend prekovremenog rada u poslednjih mesec dana...",
+    //     "riskLevel": "medium"
+    //   },
+    //   {
+    //     "title": "Pozitivna povratna informacija",
+    //     "text": "Vaši izveštaji pokazuju visok nivo angažovanosti...",
+    //     "riskLevel": "low"
+    //   },
+    //   {
+    //     "title": "Fizički simptomi",
+    //     "text": "Prijavili ste glavobolje i bol u leđima više puta...",
+    //     "riskLevel": "medium"
+    //   },
+    //   {
+    //     "title": "Zdravlje i blagostanje",
+    //     "text": "Prosečan kvalitet sna i nivo stresa su stabilni...",
+    //     "riskLevel": "low"
+    //   }
+    // ];
 
     this.user = this.authService.getUser();
 

@@ -1,0 +1,64 @@
+package rules.weekly;
+
+import burnoutrulesengine.burnoutrulesengine.model.WeeklyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+
+global BurnoutRisk riskResult;
+
+
+rule "DRL_E_Weekly_High_Risk_Combo"
+salience 10
+when
+    $f: WeeklyRecordFact(
+        avgStressLevel >= 8,     // Stres 8+
+        avgSleepHours < 6,       // San manje od 6h
+        avgWorkingHours > 10.0   // Rad više od 10h u proseku
+    )
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("KRITIČAN RIZIK! Ekstremna kombinacija stresa, nedostatka sna i prekovremenog rada. **Obavezno** odsustvo (5-10 dana) i obavestite menadžera.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🔥 Aktivirano: DRL_E_Weekly_High_Risk_Combo");
+    riskResult.getActivatedRules().add("DRL_E_Weekly_High_Risk_Combo");
+end
+
+rule "DRL_E_Weekly_High_Risk_Symptoms"
+salience 5
+when
+    $f: WeeklyRecordFact(symptomsCount >= 3)
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("Zaposleni ima ≥3 prijavljena simptoma. Predlaže se odsustvo (5-10 dana) i razgovor sa menadžerom.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🔥 Aktivirano: DRL_E_Weekly_High_Risk_Symptoms");
+    riskResult.getActivatedRules().add("DRL_E_Weekly_High_Risk_Symptoms");
+end
+
+rule "DRL_E_Weekly_Medium_Risk_Sleep_Stress"
+when
+    $f: WeeklyRecordFact(
+        avgSleepHours < 6 || avgStressLevel >= 7
+    )
+then
+    if (riskResult.getRiskLevel() == null || riskResult.getRiskLevel().equals("Nizak")) {
+        riskResult.setRiskLevel("Srednji");
+        riskResult.setRecommendation("Preporučuje se fokus na poboljšanje kvaliteta sna/smanjenje stresa. Predlog: kratko odsustvo (1-2 dana).");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("⚠️ Aktivirano: DRL_E_Weekly_Medium_Risk_Sleep_Stress");
+        riskResult.getActivatedRules().add("DRL_E_Weekly_Medium_Risk_Sleep_Stress");
+    }
+end
+
+rule "DRL_E_Weekly_Low_Risk"
+salience -10
+when
+    $f: WeeklyRecordFact(avgWorkingHours <= 40, avgStressLevel <= 5, avgSleepHours >= 7)
+then
+    if (riskResult.getRiskLevel() == null || riskResult.getRiskLevel().equals("Nizak")) {
+        riskResult.setRiskLevel("Nizak");
+        riskResult.setRecommendation("Vaši parametri su stabilni. Nastavite sa zdravim navikama! Predlog: mikro-pauza.");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("✅ Aktivirano: DRL_E_Weekly_Low_Risk");
+        riskResult.getActivatedRules().add("DRL_E_Weekly_Low_Risk");
+    }
+end

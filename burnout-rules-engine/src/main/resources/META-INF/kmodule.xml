@@ -8,4 +8,12 @@
         <ksession name="ksession-weekly-rules"/>
     </kbase>
 
+    <kbase name="trendRulesKBase" packages="rules.accumulate, rules.cep">
+        <ksession name="ksession-trend-rules"/>
+    </kbase>
+
+    <kbase name="managerRulesKBase" packages="rules.manager">
+        <ksession name="ksession-manager-rules"/>
+    </kbase>
+
 </kmodule>

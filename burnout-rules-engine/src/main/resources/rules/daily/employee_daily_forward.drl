@@ -1,0 +1,99 @@
+package rules.daily;
+
+import burnoutrulesengine.burnoutrulesengine.model.DailyRecordFact;
+import burnoutrulesengine.burnoutrulesengine.model.ChainFact;
+import burnoutrulesengine.burnoutrulesengine.model.BurnoutRisk;
+
+global BurnoutRisk riskResult;
+
+rule "DRL_E_Daily_High_Risk"
+when
+    $fact: DailyRecordFact(workingHours > 10, stressLevel >= 8, sleepHours < 6)
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("Kritičan nivo. Odmah zatražite slobodan dan i preporučeno je odsustvo (5-10 dana).");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🔥 Aktivirano: DRL_E_Daily_High_Risk");
+    riskResult.getActivatedRules().add("DRL_E_Daily_High_Risk");
+end
+
+rule "DRL_E_Daily_Medium_Risk_Overwork"
+when
+    $fact: DailyRecordFact(workingHours > 8, stressLevel >= 6, stressLevel <= 7)
+then
+    if (riskResult.getRiskLevel() == null) {
+        riskResult.setRiskLevel("Srednji");
+        riskResult.setRecommendation("Preporučujemo kraću pauzu i smanjenje prekovremenog rada u naredna 3 dana. Predlog: kratko odsustvo (1-2 dana).");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("⚠️ Aktivirano: DRL_E_Daily_Medium_Risk_Overwork");
+        riskResult.getActivatedRules().add("DRL_E_Daily_Medium_Risk_Overwork");
+    }
+end
+
+rule "DRL_E_Daily_Low_Risk_Default"
+salience -10
+when
+    $fact: DailyRecordFact(workingHours <= 8, stressLevel <= 5, sleepHours >= 7)
+then
+    if (riskResult.getRiskLevel() == null) {
+        riskResult.setRiskLevel("Nizak");
+        riskResult.setRecommendation("Vaši parametri su stabilni. Nastavite sa zdravim navikama! Predlog: mikro-pauza.");
+        riskResult.setManagerNotificationNeeded(false);
+        System.out.println("✅ Aktivirano: DRL_E_Daily_Low_Risk_Default");
+        riskResult.getActivatedRules().add("DRL_E_Daily_Low_Risk_Default");
+    }
+end
+
+// Ulazne cinjenice F1 i F2:
+rule "Chain_F1_High_Stress"
+when
+    $fact: DailyRecordFact(stressLevel >= 8)
+then
+    insert(new ChainFact("a")); // a = stres >= 8
+end
+
+rule "Chain_F2_Low_Sleep"
+when
+    $fact: DailyRecordFact(sleepHours < 6)
+then
+    insert(new ChainFact("b")); // b = san < 6h
+end
+
+// R4: a ^ b -> l
+rule "Chain_R4_Preliminary_Risk"
+when
+    ChainFact(name == "a")
+    ChainFact(name == "b")
+then
+    insert(new ChainFact("l")); // l = preliminarni_rizik_srednji
+end
+
+// R3: b ^ l -> m
+rule "Chain_R3_Suspicion_High_Risk"
+when
+    ChainFact(name == "b")
+    ChainFact(name == "l")
+then
+    insert(new ChainFact("m")); // m = sumnja_na_visok_rizik
+end
+
+// R2: l ^ m -> p
+rule "Chain_R2_High_Risk_Concluded"
+when
+    ChainFact(name == "l")
+    ChainFact(name == "m")
+then
+    insert(new ChainFact("p")); // p = rizik_visok
+end
+
+// R1: p -> q (finalna akcija lancanog pravila)
+rule "Chain_R1_High_Risk_Action"
+when
+    ChainFact(name == "p")
+then
+    riskResult.setRiskLevel("Visok");
+    riskResult.setRecommendation("KRITIČAN BURNOUT RIZIK! (Lančano zaključivanje). Preporuka odmora i obaveštenje menadžeru.");
+    riskResult.setManagerNotificationNeeded(true);
+    System.out.println("🔥 Aktivirano: Chain_R1_High_Risk_Action (Lančano)");
+    riskResult.getActivatedRules().add("Chain_R1_High_Risk_Action");
+end

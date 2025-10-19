@@ -1,7 +1,7 @@
 <div class="member-card" (click)="onCardClick()">
   <div class="member-info">
     <div class="member-avatar">
-      <img [src]="member.imageUrl" alt="Member Picture">
+      <img [src]="getFullImageUrl(member.profilePic, 'user')" alt="Member Picture">
     </div>
     <div class="member-details">
       <h4 class="member-name">{{ member.firstName }} {{ member.lastName }}</h4>
@@ -10,14 +10,13 @@
   </div>
   <div class="member-stats">
     <div class="param-row">
-      <span data-label="Param:"><strong>23</strong></span>
-      <span data-label="Param:"><strong>23</strong></span>
-      <span data-label="Param:"><strong>24</strong></span>
+      <span data-label="Sleep:"><strong>23</strong></span>
+      <span data-label="Stress:"><strong>23</strong></span>
+      <span data-label="Worktime:"><strong>24</strong></span>
     </div>
     <div class="risk-section">
-      <span class="risk-label">Risk:</span>
+      <span class="risk-label">Burnout risk:</span>
       <div class="risk-bar-container">
-<!--        <div class="risk-bar-fill" [ngClass]="getRiskColor(member.riskScore)" [style.width]="(member.riskScore * 100) + '%'"></div>-->
         <div class="risk-bar-fill" [ngClass]="getRiskColor(20)" [style.width]="(20 * 100) + '%'"></div>
       </div>
     </div>

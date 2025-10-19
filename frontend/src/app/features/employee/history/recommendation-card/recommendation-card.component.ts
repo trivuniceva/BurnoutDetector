@@ -16,11 +16,11 @@ export class RecommendationCardComponent {
   getRiskClass(): string {
     const risk = this.recommendation.riskLevel?.toLowerCase();
     switch (risk) {
-      case 'low':
+      case 'nizak':
         return 'low-risk';
-      case 'medium':
+      case 'srednji':
         return 'medium-risk';
-      case 'high':
+      case 'visok':
         return 'high-risk';
       default:
         return '';

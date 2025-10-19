@@ -1,5 +1,6 @@
-export type UserRole = 'EMPLOYEE' | 'MANAGER' | 'ADMINISTRATOR'
+import {WeeklyReport} from './weekly-report.model';
 
+export type UserRole = 'EMPLOYEE' | 'MANAGER' | 'ADMINISTRATOR'
 
 export interface User {
   id: string;
@@ -8,6 +9,8 @@ export interface User {
   email: string;
   userRole: UserRole;
   imageUrl?: string;
+  profilePic?: string;
 
   // riskScore: number;
+  weeklyReport?: WeeklyReport;
 }
