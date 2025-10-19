@@ -18,35 +18,39 @@ export class StatCardComponent {
 
   get riskColor(): string {
     let adjustedRisk = this.risk;
+
     if (this.label.toLowerCase().includes('sleep')) {
       adjustedRisk = 1 - this.risk; // manje sati → veći rizik
+    } else if (this.label.toLowerCase().includes('working hours')) {
+      if (this.risk <= 0.66) adjustedRisk = 0.2;
+      else if (this.risk <= 0.9) adjustedRisk = 0.5;
+      else adjustedRisk = 0.85;
     }
 
-    if (adjustedRisk <= 0.3) {
-      return 'green';
-    } else if (adjustedRisk <= 0.7) {
-      return 'orange';
-    } else {
-      return 'red';
-    }
+    if (adjustedRisk <= 0.3) return 'green';
+    else if (adjustedRisk <= 0.7) return 'orange';
+    else return 'red';
   }
 
   getCircleGradient(riskValue: number): string {
     let adjustedRisk = riskValue;
     if (this.label.toLowerCase().includes('sleep')) {
       adjustedRisk = 1 - riskValue;
+    } else if (this.label.toLowerCase().includes('working hours')) {
+      if (riskValue <= 0.66) adjustedRisk = 0.2;
+      else if (riskValue <= 0.9) adjustedRisk = 0.5;
+      else adjustedRisk = 0.85;
     }
 
     const color = this.getRiskColor(adjustedRisk);
-    const progressPercentage = (1 - adjustedRisk) * 100; // obrnuta logika za boju kruga
-    const endAngle = progressPercentage * 3.6; // 360 stepeni / 100%
+    const progressPercentage = (1 - adjustedRisk) * 100;
+    const endAngle = progressPercentage * 3.6;
 
     return `conic-gradient(${color} ${endAngle}deg, #e0e0e0 ${endAngle}deg)`;
   }
 
+
   private getRiskColor(riskValue: number): string {
-    // Definirajte logiku za određivanje boje na osnovu rizika
-    // Ovo bi trebalo da bude isto kao i za risk bar
     if (riskValue < 0.3) return 'var(--color-risk-green)';
     if (riskValue <= 0.6) return 'var(--color-risk-orange)';
     return 'var(--color-risk-red)';
