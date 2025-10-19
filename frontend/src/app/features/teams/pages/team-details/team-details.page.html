@@ -1,1 +1,27 @@
-<p>team-details.page works!</p>
+<app-two-column-layout>
+  <div content-section>
+    <div class="teams-main-content">
+      <div class="team-header-container">
+        <app-entity-header
+          [label]="'Team:'"
+          [title]="team?.name ?? 'Nema naziva tima'"
+          [imageUrl]="team?.imageUrl ?? '/pics/default-team.jpg'">
+        </app-entity-header>
+      </div>
+      <app-search-bar></app-search-bar>
+      <div class="team-cards-holder">
+        <app-team-member-card *ngFor="let member of teamMembers"
+                              [member]="member"
+                              (memberSelected)="onMemberSelected(member)"
+        >
+        </app-team-member-card>
+      </div>
+    </div>
+  </div>
+
+  <div sidebar-section>
+    <div class="sidebar-content">
+      <app-employee-details [member]="selectedEmployee" *ngIf="selectedEmployee"></app-employee-details>
+    </div>
+  </div>
+</app-two-column-layout>

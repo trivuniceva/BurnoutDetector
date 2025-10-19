@@ -1,12 +1,32 @@
 <nav class="side-nav">
-  <a *ngFor="let item of navItems"
-     class="nav-item"
-     [routerLink]="item.route"
-     routerLinkActive="active"
-     [routerLinkActiveOptions]="{ exact: true }">
-    <img [src]="item.iconUrl" alt="{{ item.name }} icon" class="nav-icon">
-    <span>{{ item.name }}</span>
-  </a>
+  <ng-container *ngFor="let item of navItems">
+    <a *ngIf="!item.children"
+       class="nav-item"
+       [routerLink]="item.route"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }">
+      <img [src]="item.iconUrl" alt="{{ item.name }} icon" class="nav-icon">
+      <span>{{ item.name }}</span>
+    </a>
+
+    <div *ngIf="item.children" class="dropdown-wrapper">
+      <div class="nav-item dropdown-trigger" (click)="toggleTeamsDropdown(item)" [class.active]="isTeamsDropdownOpen">
+        <img [src]="item.iconUrl" alt="{{ item.name }} icon" class="nav-icon">
+        <span>{{ item.name }}</span>
+      </div>
+
+      <div *ngIf="isTeamsDropdownOpen" class="dropdown-menu">
+        <a *ngFor="let child of item.children"
+           class="nav-item dropdown-item"
+           [routerLink]="child.route"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+          <img *ngIf="child.iconUrl" [src]="child.iconUrl" alt="{{ child.name }} icon" class="nav-icon">
+          <span>{{ child.name }}</span>
+        </a>
+      </div>
+    </div>
+  </ng-container>
 
   <a class="nav-item logout" [routerLink]="['/login']">
     <img src="icons/logout.png" alt="Logout icon" class="nav-icon">

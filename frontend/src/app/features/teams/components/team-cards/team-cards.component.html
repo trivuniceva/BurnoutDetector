@@ -1,0 +1,9 @@
+<div class="team-card" (click)="onCardClick()">
+  <div class="team-image-container">
+    <img [src]="team?.imageUrl ?? 'defaultTeamPic.jpg'" [alt]="team?.name + ' team image'" class="team-image"/>
+  </div>
+  <div class="team-info">
+    <div class="team-name">{{ team?.name || 'Team name' }}</div>
+    <div class="project-name">{{ team?.description || 'Project name' }}</div>
+  </div>
+</div>
